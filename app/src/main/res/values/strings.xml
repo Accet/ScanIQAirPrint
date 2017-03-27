@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">ScanIQAir Print</string>
+
+    <string name="noscanner"></string>
+    <string name="noselection"></string>
+    <string name="scan">scan</string>
+
+    <string name="inquireState">inquireState</string>
+    <string name="triggerOnChangeConnectedScanner">triggerOnChangeConnectedScanner</string>
+    <string name="isLockedByMe">isLockedByMe</string>
+    <string name="selectScanner">selectScanner</string>
+    <string name="unselectScanner">unselectScanner</string>
+    <string name="preLoadScanner">preLoadScanner</string>
+    <string name="startScanning">startScanning</string>
+    <string name="cancelScanning">cancelScanning</string>
+
+    <string name="getParam">getParam</string>
+    <string name="setParam">setParam</string>
+    <string name="getErrorMessage">getErrorMessage</string>
+    <string name="createPdf">createPdf</string>
+
+    <string name="lockService">lock Service</string>
+    <string name="unlockService">unlock Service</string>
+
+    <string name="scan_id">MOB026</string>
+    <string name="scan_serial">Scan ID MOB026</string>
+    <string name="ftp_folder">scaniq.net/scans/</string>
+
+    <string name="MYSQLhost">mysql01.dexagon.net:3306</string>
+    <string name="MYSQLusername">scaniq_uPGM</string>
+    <string name="MYSQLpassword">hail888</string>
+    <string name="MYSQLdatabase">scaniq_RRinfo</string>
+
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="close_connect">closing…</string>
+
+    <string name="netPrinterListTitle_label">Net Printer</string>
+    <string name="progressDialogMessage_preparingConnection">Preparing the connection…</string>
+    <string name="progressDialogMessage_createData">Creating the data</string>
+    <string name="progressDialogMessage_sendingData">Sending the data…</string>
+    <string name="progressDialogMessage_startPrint">Printing the data </string>
+    <string name="progressDialogMessage_dataSent">The data was sent </string>
+    <string name="progressDialogMessage_printed">The printing process was completed </string>
+    <string name="progressDialogMessage_CloseConnection">Closing the connection</string>
+    <string name="progressDialogMessage_SetPaper">Please Set Paper</string>
+    <string name="progressDialogMessage_CoolingStart">Printer cooling start</string>
+    <string name="progressDialogMessage_CoolingEnd">Printer cooling end</string>
+    <string name="progressDialogMessage_WaitingPeel">Wait for peeling label</string>
+    <string name="progressDialogMessage_sendingTemplateData">File transferring</string>
+    <string name="ErrorMessage_ERROR_NONE">Succeeded</string>
+    <string name="alertDialogMessage_runtimeError">Runtime error occurred </string>
+    <string name="printerModel_title">PrinterModel</string>
+    <string name="printerModel_value">Select the printer model </string>
+    <string name="ErrorMessage_WRONG_OS">Android OS is not supported</string>
+    <string name="ErrorMessage_NO_USB">USB device is not found</string>
+
+    <string name="progressDialogMsg_printing">Ready to print…</string>
+    <string name="progressDialogMsg_transferStart">Transfer Start…</string>
+    <string name="folder_name">Folder Name</string>
+    <string name="error_input">wrong input</string>
+    <string name="msg_title_warning">Warning</string>
+    <string name="msg_title_print">Message</string>
+    <string name="button_next_print">Next Template</string>
+    <string name="cancel_printer_msg">Is cancelling, please wait</string>
+    <string name="no_files">No files were scanned</string>
+    <string name="enter_valid_email">Please enter a valid email</string>
+    <string name="registration_done">Registration done</string>
+    <string name="register_msg">Thank you for registering. You will receive an email shortly.</string>
+    <string name="ok_btn">Ok</string>
+
+</resources>
