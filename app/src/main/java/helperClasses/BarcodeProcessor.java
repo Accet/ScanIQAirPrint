@@ -4,6 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.pdf.PdfRenderer;
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
+import android.util.SparseArray;
+import android.widget.Toast;
+
+import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,6 +18,7 @@ import java.util.ArrayList;
 
 public class BarcodeProcessor {
 
+    private static final String LOG_TAG = "BarcodeProcessor";
     private Context context;
 
     public BarcodeProcessor(Context context) {
@@ -22,7 +30,24 @@ public class BarcodeProcessor {
         String barcodeText = "";
 
         for (Bitmap bitmap : bitmaps) {
+            Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+            BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(context)
+                    .build();
+            if(barcodeDetector.isOperational()){
+                SparseArray<Barcode> sparseArray = barcodeDetector.detect(frame);
+                if(sparseArray != null && sparseArray.size() > 0){
+                    for (int i = 0; i < sparseArray.size(); i++){
+                        Log.d(LOG_TAG, "Value: " + sparseArray.valueAt(i).rawValue + "----" + sparseArray.valueAt(i).displayValue);
+                        barcodeText = sparseArray.valueAt(i).rawValue;
+                    }
+                    break;
+                }else {
+                    Log.e(LOG_TAG,"SparseArray null or empty");
+                }
 
+            }else{
+                Log.e(LOG_TAG, "Detector dependencies are not yet downloaded");
+            }
         }
 
         return barcodeText;

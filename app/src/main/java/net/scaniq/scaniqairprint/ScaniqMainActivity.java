@@ -15,8 +15,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+
 import asyncTasks.AfterScanningAsyncTask;
 import asyncTasks.WirelessScannerAsyncTask;
+import helperClasses.BarcodeProcessor;
 import helperClasses.LocalFileManager;
 import helperClasses.WifiHelper;
 import static net.scaniq.scaniqairprint.MainActivity.MYSQLRRuid;
@@ -29,7 +33,7 @@ public class ScaniqMainActivity extends AppCompatActivity {
     private TextView scaniqID = null;
     private Button cancelCCEmail = null;
     private Button cancelFax = null;
-
+    private BarcodeProcessor barcodeProcessor;
     private WifiHelper wifi;
 
     private static final int PERMISSION_REQUEST_CODE = 123;
@@ -54,7 +58,7 @@ public class ScaniqMainActivity extends AppCompatActivity {
         }
 
         wifi = new WifiHelper(this);
-
+        barcodeProcessor = new BarcodeProcessor(this);
     }
 
     private void gatherAllControls() {
@@ -264,6 +268,11 @@ public class ScaniqMainActivity extends AppCompatActivity {
                 disconnectScanner();
                 //Get the CC if entered.....
                 if (LocalFileManager.getInstance().getFilesCount() > 0) {
+                    File[] files = LocalFileManager.getInstance().getCompatibleFiles();
+                    for (File file: files){
+                        String barcode = barcodeProcessor.scanForBarcodes(file);
+                        Toast.makeText(this, barcode, Toast.LENGTH_LONG).show();
+                    }
                     new AfterScanningAsyncTask(this).execute(ccEmail,validFaxNumber);
                 } else {
                     Toast.makeText(this,getString(R.string.no_files), Toast.LENGTH_SHORT).show();
