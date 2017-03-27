@@ -26,7 +26,7 @@ public class WirelessScannerAsyncTask extends AsyncTask<String, String, String>{
     private final String LAT = "latitude";
     private final String LON = "longitude";
     private final String LAN = "longitude";
-
+// TODO SET THE GIT
     public WirelessScannerAsyncTask(Context context) {
         this.context = context;
     }
