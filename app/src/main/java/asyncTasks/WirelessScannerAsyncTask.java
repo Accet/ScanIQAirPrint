@@ -48,7 +48,7 @@ public class WirelessScannerAsyncTask extends AsyncTask<String, String, String>{
         dialog.show();
 
     }
-
+//TEST
     @Override
     protected String doInBackground(String... strings) {
         Log.i("Wifi"," doIn");
