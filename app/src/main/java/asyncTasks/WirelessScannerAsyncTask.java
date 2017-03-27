@@ -25,6 +25,7 @@ public class WirelessScannerAsyncTask extends AsyncTask<String, String, String>{
     private String networkPassword = "";
     private final String LAT = "latitude";
     private final String LON = "longitude";
+    private final String LAN = "longitude";
 
     public WirelessScannerAsyncTask(Context context) {
         this.context = context;
