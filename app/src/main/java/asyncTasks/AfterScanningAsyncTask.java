@@ -68,26 +68,6 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
         String additionalEmail = strings[0];
         String validFaxNumber = strings[1];
 
-        DatabaseManager dbManager = DatabaseManager.getInstance();
-
-        Connection dbCon = dbManager.getConnection(context);
-        ResultSet result = dbManager.executeSelecteQuery(dbCon,
-                "SELECT RR_mailCC, RR_mailBCC FROM RR_Settings WHERE RR_ID = "
-                        + SharedPreferencesManager.getInstance(context).getScaniqRrid(),
-                context);
-        try {
-            while (result.next()) {
-                ccMail = result.getString("RR_mailCC");
-                bccMail = result.getString("RR_mailBCC");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            AlertBoxBuilder.AlertBox(context, "Error", "Connection to the database failed. Try again, please");
-        }
-        finally {
-            dbManager.closeConnection(dbCon, context);
-        }
-
         Log.i("Path", "-> " + mLocalFileManager.getAbsoulteFilePath());
         try {
             String path = mLocalFileManager.getAbsoulteFilePath();
@@ -115,11 +95,34 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
 
             }
 
+            DatabaseManager dbManager = DatabaseManager.getInstance();
+
+            Connection dbCon = dbManager.getConnection(context);
+            ResultSet result = dbManager.executeSelecteQuery(dbCon,
+                    "SELECT RR_mailCC, RR_mailBCC FROM RR_Settings WHERE RR_ID = "
+                            + SharedPreferencesManager.getInstance(context).getScaniqRrid(),
+                    context);
+            try {
+                while (result.next()) {
+                    ccMail = result.getString("RR_mailCC");
+                    bccMail = result.getString("RR_mailBCC");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                AlertBoxBuilder.AlertBox(context, "Error", "Connection to the database failed. Try again, please");
+            }
+            finally {
+                dbManager.closeConnection(dbCon, context);
+            }
+
+
             sendToFTP();
 
             //To send mail and store data in DB
             File[] filestoSend = mLocalFileManager.globalFileArray;
             int tempCount = mLocalFileManager.getFilesCount();
+
+
             for (File tempFile : filestoSend) {
                 publishProgress("Play Sound",""+tempCount--);
                 storeDataIntoDatabase(tempFile,additionalEmail,validFaxNumber);
@@ -389,24 +392,26 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
 
         sendScanEmail.setSubject(subject);
         sendScanEmail.setBody(messageBody);
+
         try {
             sendScanEmail.addAttachment(filePath);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         try {
             sendScanEmail.send(false);
         } catch (Exception e) {
             sendScanEmail.setPort("25");
+            Log.i("Exception","-> "+e.getMessage());
+            e.printStackTrace();
             try {
                 sendScanEmail.send(false);
             } catch (Exception e1) {
-                AlertBoxBuilder.AlertBox(context,"Error","Sending email failed...\nPlease rescan the document!");
                 mLocalFileManager.deleteFile();
+//                AlertBoxBuilder.AlertBox(context,"Error","Sending email failed...\nPlease rescan the document!");
                 e1.printStackTrace();
             }
-            Log.i("Exception","-> "+e.getMessage());
-            e.printStackTrace();
         }
     }
 }

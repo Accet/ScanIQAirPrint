@@ -159,11 +159,13 @@ public class EmailSender extends javax.mail.Authenticator {
                 msg.setFrom(new InternetAddress("ScanIQ@scaniq.com"));
             }
 
-            if (!cc.equals("")) {
-                msg.addRecipients(Message.RecipientType.CC, getCC());
+            if (  cc != null && !cc.equals("")) {
+                InternetAddress ccAddress = new InternetAddress(getCC());
+                msg.addRecipient(MimeMessage.RecipientType.CC, ccAddress);
             }
-            if (!bcc.equals("")) {
-                msg.addRecipients(Message.RecipientType.BCC, getBCC());
+            if ( bcc != null && !bcc.equals("")) {
+                InternetAddress bccAddress = new InternetAddress(getBCC());
+                msg.addRecipient(Message.RecipientType.BCC, bccAddress);
             }
 
             InternetAddress[] addressTo = new InternetAddress[to.length];
@@ -186,6 +188,9 @@ public class EmailSender extends javax.mail.Authenticator {
 
             // Put parts in message
             msg.setContent(multipart);
+
+
+            Log.i("Port","-> "+port);
 
             // send email
             Transport.send(msg);
