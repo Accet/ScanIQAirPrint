@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.widget.Toast;
 import com.itextpdf.text.pdf.PdfReader;
@@ -20,6 +19,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import helperClasses.AlertBoxBuilder;
 import helperClasses.DatabaseManager;
@@ -34,9 +34,9 @@ import static net.scaniq.scaniqairprint.ScaniqMainActivity.serialNumber;
 
 public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
 
-    Context context;
-    LocalFileManager mLocalFileManager;
-    SoundPlayer mSoundPlayer;
+    private Context context;
+    private LocalFileManager mLocalFileManager;
+    private SoundPlayer mSoundPlayer;
     private ProgressDialog dialog;
     private WifiHelper wifi;
     private String ccMail;
@@ -67,15 +67,13 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
 
         Log.i("Path", "-> " + mLocalFileManager.getAbsoulteFilePath());
         try {
-            String path = mLocalFileManager.getAbsoulteFilePath();
+//            String path = mLocalFileManager.getAbsoulteFilePath();
 
             File[] compatibleFiles = mLocalFileManager.getCompatibleFiles();
             Log.i("Files","->"+compatibleFiles.length);
-            if (compatibleFiles != null) {
-                if (compatibleFiles.length == 1) {
-                    //Tell scanned pages if we have only one file........
-                    publishProgress(compatibleFiles[0].getAbsolutePath());
-                }
+            if (compatibleFiles.length == 1) {
+                //Tell scanned pages if we have only one file........
+                publishProgress(compatibleFiles[0].getAbsolutePath());
             }
 
             if(!wifi.hasActiveInternetConnection(context.getApplicationContext())) {
@@ -179,14 +177,13 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
                 AlertBoxBuilder.AlertBox(context,"Error","Some error appeared. Try scan again please.");
                 break;
             default :
-                String filename = updates;
-                if (filename != null && !filename.equals("")) {
+                if (!updates.equals("")) {
 
                     //There is a file
                     //DETECT NUMBER OF PAGES AND CALL PAGES SOUND
                     PdfReader doc;
                     try {
-                        doc = new PdfReader(new FileInputStream(filename));
+                        doc = new PdfReader(new FileInputStream(updates));
                         final int pages = doc.getNumberOfPages();
                         mSoundPlayer.playPagesSound(pages);
 
@@ -226,7 +223,7 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
     private String getCurrentDate()
     {
 //        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new Date());
+        return (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)).format(new Date());
     }
 
     private int getPagesFromFile(File file){
@@ -295,7 +292,7 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
     }
     private static void ftpCreateDirectoryTree( FTPClient client, String ftpDir ) throws IOException {
 
-        boolean dirExists = false;
+        boolean dirExists;
 
         //tokenize the string and attempt to change into each directory level.  If you cannot, then start creating.
         String[] directories = ftpDir.split("/");
@@ -351,7 +348,7 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
 
         SharedPreferencesManager mSharedPreferences = SharedPreferencesManager.getInstance(context);
 
-        ArrayList<String> to = new ArrayList<String>();
+        ArrayList<String> to = new ArrayList<>();
 
         to.add(mSharedPreferences.getScaniqMailto());
 
