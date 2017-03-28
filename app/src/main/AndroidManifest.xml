@@ -26,6 +26,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode"/>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,12 +39,12 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name="samsung_print_classes.ServiceManager"
-            android:enabled="true" />
+        <!--<service-->
+            <!--&lt;!&ndash;android:name="samsung_print_classes.ServiceManager"&ndash;&gt;-->
+            <!--android:enabled="true" />-->
 
-        <activity android:name="samsung_print_classes.Discovery"></activity>
-        <activity android:name="samsung_print_classes.Option"></activity>
+        <!--<activity android:name="samsung_print_classes.Discovery"></activity>-->
+        <!--<activity android:name="samsung_print_classes.Option"></activity>-->
 
         <service android:name="notification_fcm.FirebaseMessagingService">
             <intent-filter>

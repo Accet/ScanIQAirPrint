@@ -273,6 +273,7 @@ public class ScaniqMainActivity extends AppCompatActivity {
 //                    for (File file: files){
 //                        String barcode = barcodeProcessor.scanForBarcodes(file);
 //                        Toast.makeText(this, barcode, Toast.LENGTH_LONG).show();
+//                        Log.i("BARCODE", "BARCODE -> " + barcode);
 //                    }
                     new AfterScanningAsyncTask(this).execute(additionalEmail,validFaxNumber);
                 } else {
