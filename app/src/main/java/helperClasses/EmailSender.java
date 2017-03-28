@@ -160,12 +160,23 @@ public class EmailSender extends javax.mail.Authenticator {
             }
 
             if (  cc != null && !cc.equals("")) {
-                InternetAddress ccAddress = new InternetAddress(getCC());
-                msg.addRecipient(MimeMessage.RecipientType.CC, ccAddress);
+                Log.i("CC","-> "+cc);
+                cc = cc.replaceAll(";", ",");
+                String[] ccs = cc.split(",");
+                for (String cci : ccs) {
+                    InternetAddress ccAddress;
+                    ccAddress = new InternetAddress(cci);
+                    msg.addRecipient(Message.RecipientType.CC, ccAddress);
+                }
             }
             if ( bcc != null && !bcc.equals("")) {
-                InternetAddress bccAddress = new InternetAddress(getBCC());
-                msg.addRecipient(Message.RecipientType.BCC, bccAddress);
+                bcc = bcc.replaceAll(";", ",");
+                String[] bccs = bcc.split(",");
+                for (String bcci : bccs) {
+                    InternetAddress bccAddress;
+                    bccAddress = new InternetAddress(bcci);
+                    msg.addRecipient(Message.RecipientType.BCC, bccAddress);
+                }
             }
 
             InternetAddress[] addressTo = new InternetAddress[to.length];

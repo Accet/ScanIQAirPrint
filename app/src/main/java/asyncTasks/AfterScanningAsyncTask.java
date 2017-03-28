@@ -182,6 +182,10 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
             case "Play Sound":
                 mSoundPlayer.playFilesSound(count);
                 break;
+            case "Alert":
+                dialog.dismiss();
+                AlertBoxBuilder.AlertBox(context,"Test","Gatherning Controls!!!!");
+                break;
             default :
                 String filename = updates;
                 if (filename != null && !filename.equals("")) {
@@ -399,18 +403,24 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
             e.printStackTrace();
         }
 
-        try {
+        try
+        {
             sendScanEmail.send(false);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             sendScanEmail.setPort("25");
             Log.i("Exception","-> "+e.getMessage());
             e.printStackTrace();
-            try {
+            try
+            {
                 sendScanEmail.send(false);
-            } catch (Exception e1) {
-                mLocalFileManager.deleteFile();
-//                AlertBoxBuilder.AlertBox(context,"Error","Sending email failed...\nPlease rescan the document!");
+            }
+            catch (Exception e1)
+            {
                 e1.printStackTrace();
+                mLocalFileManager.deleteFile();
+//              AlertBoxBuilder.AlertBox(context,"Error","Sending email failed...\nPlease rescan the document!");
             }
         }
     }
