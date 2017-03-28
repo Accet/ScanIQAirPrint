@@ -38,7 +38,7 @@ public class ScaniqMainActivity extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_CODE = 123;
     private static final int SCANSNAP_REQ = 100;
-    private String ccEmail = "";
+    private String additionalEmail = "";
     private String validFaxNumber = "";
     public static String serialNumber = null;
     public static boolean allowed = true;
@@ -90,7 +90,7 @@ public class ScaniqMainActivity extends AppCompatActivity {
 
     public void ccEmailCancelClicked(View view)
     {
-        ccEmail = "";
+        additionalEmail = "";
         ccEmailAddress.setText("");
         cancelCCEmail.setVisibility(View.INVISIBLE);
     }
@@ -162,10 +162,10 @@ public class ScaniqMainActivity extends AppCompatActivity {
                     wantToCloseDialog = true;
                 }
                 else{
-                    ccEmail = tempCCEMail;
+                    additionalEmail = tempCCEMail;
                     cancelCCEmail.setVisibility(View.VISIBLE);
                     ccEmailAddress.setVisibility(View.VISIBLE);
-                    ccEmailAddress.setText("CC : "+ccEmail);
+                    ccEmailAddress.setText("CC : "+additionalEmail);
                     wantToCloseDialog = false;
                 }
                 //Do stuff, possibly set wantToCloseDialog to true then...
@@ -273,7 +273,7 @@ public class ScaniqMainActivity extends AppCompatActivity {
 //                        String barcode = barcodeProcessor.scanForBarcodes(file);
 //                        Toast.makeText(this, barcode, Toast.LENGTH_LONG).show();
 //                    }
-                    new AfterScanningAsyncTask(this).execute(ccEmail,validFaxNumber);
+                    new AfterScanningAsyncTask(this).execute(additionalEmail,validFaxNumber);
                 } else {
                     Toast.makeText(this,getString(R.string.no_files), Toast.LENGTH_SHORT).show();
                 }

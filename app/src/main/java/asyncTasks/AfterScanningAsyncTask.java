@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,6 +42,8 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
     SoundPlayer mSoundPlayer;
     private ProgressDialog dialog;
     private WifiHelper wifi;
+    private String ccMail;
+    private String bccMail;
 
     public AfterScanningAsyncTask(Context context) {
         this.context = context;
@@ -61,8 +65,28 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... strings) {
-        String ccEmail = strings[0];
+        String additionalEmail = strings[0];
         String validFaxNumber = strings[1];
+
+        DatabaseManager dbManager = DatabaseManager.getInstance();
+
+        Connection dbCon = dbManager.getConnection(context);
+        ResultSet result = dbManager.executeSelecteQuery(dbCon,
+                "SELECT RR_mailCC, RR_mailBCC FROM RR_Settings WHERE RR_ID = "
+                        + SharedPreferencesManager.getInstance(context).getScaniqRrid(),
+                context);
+        try {
+            while (result.next()) {
+                ccMail = result.getString("RR_mailCC");
+                bccMail = result.getString("RR_mailBCC");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            AlertBoxBuilder.AlertBox(context, "Error", "Connection to the database failed. Try again, please");
+        }
+        finally {
+            dbManager.closeConnection(dbCon, context);
+        }
 
         Log.i("Path", "-> " + mLocalFileManager.getAbsoulteFilePath());
         try {
@@ -98,10 +122,10 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
             int tempCount = mLocalFileManager.getFilesCount();
             for (File tempFile : filestoSend) {
                 publishProgress("Play Sound",""+tempCount--);
-                storeDataIntoDatabase(tempFile,ccEmail,validFaxNumber);
+                storeDataIntoDatabase(tempFile,additionalEmail,validFaxNumber);
 
                 String filePath = tempFile.getAbsolutePath();
-                sendEmail(ccEmail,filePath);
+                sendEmail(additionalEmail,filePath);
 
                 if(!validFaxNumber.equals(""))
                 {
@@ -318,7 +342,7 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
         }
     }
 
-    private void sendEmail(String ccEmail,String filePath)  {
+    private void sendEmail(String additionalEmail,String filePath)  {
         publishProgress("Sending email...");
 //        EmailSender sendScanEmail = new EmailSender("savanpatel39@gmail.com","savanpatel_39");
         EmailSender sendScanEmail = new EmailSender("noreply@ez2scan.com","password01");
@@ -329,10 +353,19 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
 
         to.add(mSharedPreferences.getScaniqMailto());
 
-        if(!ccEmail.equals(""))
+        if(!additionalEmail.equals(""))
         {
-            to.add(ccEmail);
+            to.add(additionalEmail);
         }
+
+        if (!ccMail.equals("")) {
+            sendScanEmail.setCC(ccMail);
+        }
+
+        if (!bccMail.equals("")) {
+            sendScanEmail.setBCC(bccMail);
+        }
+
         String from = "noreply@ez2scan.com";
         String subject = "RR-MOB"+mSharedPreferences.getScaniqRrid().substring(2);
 

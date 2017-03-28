@@ -11,8 +11,10 @@ import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.activation.MailcapCommandMap;
+import javax.mail.Address;
 import javax.mail.AuthenticationFailedException;
 import javax.mail.BodyPart;
+import javax.mail.Message;
 import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -32,6 +34,9 @@ public class EmailSender extends javax.mail.Authenticator {
 
     private String[] to;
     private String from;
+
+    private String cc;
+    private String bcc;
 
     private String port;
     private String sport;
@@ -59,9 +64,18 @@ public class EmailSender extends javax.mail.Authenticator {
         return to;
     }
 
+    public void setCC(String cc) {
+        this.cc = cc;
+    }
+
+    public String getCC() {
+        return cc;
+    }
+
     public void setTo(String[] to) {
         this.to = to;
     }
+
 
     public String getFrom() {
         return from;
@@ -145,6 +159,13 @@ public class EmailSender extends javax.mail.Authenticator {
                 msg.setFrom(new InternetAddress("ScanIQ@scaniq.com"));
             }
 
+            if (!cc.equals("")) {
+                msg.addRecipients(Message.RecipientType.CC, getCC());
+            }
+            if (!bcc.equals("")) {
+                msg.addRecipients(Message.RecipientType.BCC, getBCC());
+            }
+
             InternetAddress[] addressTo = new InternetAddress[to.length];
             for (int i = 0; i < to.length; i++) {
                 Log.i("Email", "to[i] ->" + to[i]);
@@ -184,6 +205,7 @@ public class EmailSender extends javax.mail.Authenticator {
         multipart.addBodyPart(messageBodyPart);
     }
 
+
     @Override
     public PasswordAuthentication getPasswordAuthentication() {
         return new PasswordAuthentication(user, password);
@@ -214,5 +236,13 @@ public class EmailSender extends javax.mail.Authenticator {
 
     public void setBody(String _body) {
         this.body = _body;
+    }
+
+    public String getBCC() {
+        return bcc;
+    }
+
+    public void setBCC(String bcc) {
+        this.bcc = bcc;
     }
 }
