@@ -31,9 +31,6 @@ import helperClasses.WifiHelper;
 
 import static net.scaniq.scaniqairprint.ScaniqMainActivity.serialNumber;
 
-/**
- * Created by savanpatel on 2017-02-07.
- */
 
 public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
 
@@ -90,7 +87,7 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
                         Log.i("Connect","...ing");
                     }
                 } catch (Exception e) {
-
+                    publishProgress("Alert");
                 }
 
             }
@@ -109,7 +106,9 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-                AlertBoxBuilder.AlertBox(context, "Error", "Connection to the database failed. Try again, please");
+                publishProgress("Alert");
+
+//                AlertBoxBuilder.AlertBox(context, "Error", "Connection to the database failed. Try again, please");
             }
             finally {
                 dbManager.closeConnection(dbCon, context);
@@ -140,6 +139,8 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
         }
         catch (Exception e) {
             e.printStackTrace();
+            publishProgress("Alert");
+
         }
         return null;
     }
@@ -148,16 +149,7 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
     protected void onPostExecute(String lenghtOfFile) {
         Log.i("Post","In");
         dialog.dismiss();
-
         mLocalFileManager.deleteFile();
-//        File[] filestoSend = mLocalFileManager.globalFileArray;
-//        for (File tempFile : filestoSend) {
-//
-//            boolean f = new File(tempFile.getAbsolutePath()).getAbsoluteFile().delete();
-//            Log.i("File",""+f);
-//        }
-
-        // do stuff after posting data
     }
 
     @Override
@@ -184,7 +176,7 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
                 break;
             case "Alert":
                 dialog.dismiss();
-                AlertBoxBuilder.AlertBox(context,"Test","Gatherning Controls!!!!");
+                AlertBoxBuilder.AlertBox(context,"Error","Some error appeared. Try scan again please.");
                 break;
             default :
                 String filename = updates;
@@ -241,6 +233,7 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
         try {
             return new PdfReader(new FileInputStream(file)).getNumberOfPages();
         } catch (IOException e) {
+            publishProgress("Alert");
             e.printStackTrace();
             return 0;
         }
@@ -282,17 +275,18 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
                 client.logout();
             } catch (Exception e) {
                 mLocalFileManager.deleteFile();
-                AlertBoxBuilder.AlertBox(context,"Error","Storing File to Server Failed...\nPlease rescan the document!");
+                publishProgress("Alert");
+
+//                AlertBoxBuilder.AlertBox(context,"Error","Storing File to Server Failed...\nPlease rescan the document!");
                 e.printStackTrace();
             } finally {
                 try {
                     if (fis != null) {
-
                         fis.close();
                     }
                     client.disconnect();
-
                 } catch (IOException e) {
+                    publishProgress("Alert");
                     e.printStackTrace();
                 }
             }
@@ -345,6 +339,7 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
             sendScanEmail.addAttachment(filePath);
             sendScanEmail.send(true);
         } catch (Exception e) {
+            publishProgress("Alert");
             e.printStackTrace();
         }
     }
@@ -400,6 +395,7 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
         try {
             sendScanEmail.addAttachment(filePath);
         } catch (Exception e) {
+            publishProgress("Alert");
             e.printStackTrace();
         }
 
@@ -420,7 +416,7 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
             {
                 e1.printStackTrace();
                 mLocalFileManager.deleteFile();
-//              AlertBoxBuilder.AlertBox(context,"Error","Sending email failed...\nPlease rescan the document!");
+                publishProgress("Alert");
             }
         }
     }
