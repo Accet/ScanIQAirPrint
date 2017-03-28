@@ -269,10 +269,10 @@ public class ScaniqMainActivity extends AppCompatActivity {
                 //Get the CC if entered.....
                 if (LocalFileManager.getInstance().getFilesCount() > 0) {
                     File[] files = LocalFileManager.getInstance().getCompatibleFiles();
-                    for (File file: files){
-                        String barcode = barcodeProcessor.scanForBarcodes(file);
-                        Toast.makeText(this, barcode, Toast.LENGTH_LONG).show();
-                    }
+//                    for (File file: files){
+//                        String barcode = barcodeProcessor.scanForBarcodes(file);
+//                        Toast.makeText(this, barcode, Toast.LENGTH_LONG).show();
+//                    }
                     new AfterScanningAsyncTask(this).execute(ccEmail,validFaxNumber);
                 } else {
                     Toast.makeText(this,getString(R.string.no_files), Toast.LENGTH_SHORT).show();
