@@ -20,6 +20,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import asyncTasks.AfterScanningAsyncTask;
+import asyncTasks.ScanningSettings;
 import asyncTasks.WirelessScannerAsyncTask;
 import helperClasses.AlertBoxBuilder;
 import helperClasses.BarcodeProcessor;
@@ -75,7 +76,9 @@ public class ScaniqMainActivity extends AppCompatActivity {
 
     public void scanBtnClicked(View view)
     {
-        new WirelessScannerAsyncTask(this).execute();
+        new ScanningSettings(this).execute();
+
+//        new WirelessScannerAsyncTask(this).execute();
     }
 
     public void ccEmailBtnClicked(View view)

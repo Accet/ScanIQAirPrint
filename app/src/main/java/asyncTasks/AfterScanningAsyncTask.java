@@ -44,6 +44,7 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
     private String bccMail;
     private BarcodeProcessor barcodeProcessor;
     private int isBarcodeEnabled;
+    private int isProbillNumberActive;
 
     public AfterScanningAsyncTask(Context context) {
         this.context = context;
@@ -98,7 +99,7 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
 
             Connection dbCon = dbManager.getConnection(context);
             ResultSet result = dbManager.executeSelecteQuery(dbCon,
-                    "SELECT RR_mailCC, RR_mailBCC, RR_barcodeMode FROM RR_Settings WHERE RR_ID = "
+                    "SELECT RR_mailCC, RR_mailBCC, RR_barcodeMode, RR_probillMode FROM RR_Settings WHERE RR_ID = "
                             + SharedPreferencesManager.getInstance(context).getScaniqRrid(),
                     context);
             try {
@@ -106,18 +107,16 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
                     ccMail = result.getString("RR_mailCC");
                     bccMail = result.getString("RR_mailBCC");
                     isBarcodeEnabled = result.getInt("RR_barcodeMode");
+                    isProbillNumberActive = result.getInt("RR_probillMode");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
                 publishProgress("Alert");
-
-//                AlertBoxBuilder.AlertBox(context, "Error", "Connection to the database failed. Try again, please");
             }
             finally {
                 dbManager.closeConnection(dbCon, context);
             }
 
-            //To send mail and store data in DB
             File[] filestoSend = mLocalFileManager.globalFileArray;
             int tempCount = mLocalFileManager.getFilesCount();
             ArrayList<String> barcodes = new ArrayList<>();
@@ -131,6 +130,10 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
                         File newFile = new File(path, createFileName(barcode));
                         file.renameTo(newFile);
                     }
+                } else if (isProbillNumberActive == 1) {
+                    String probillNumber = SharedPreferencesManager.getInstance(context).getScanProbill();
+                    File newFile = new File(path, createFileName(probillNumber));
+                    file.renameTo(newFile);
                 }
             }
 

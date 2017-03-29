@@ -22,6 +22,8 @@ public class SharedPreferencesManager {
     private static final String SCANIQ_MD5 = "scaniq_md5";
     private static final String SCAN_LAT = "scan_latitude";
     private static final String SCAN_LON = "scan_longitude";
+    private static final String SCAN_PROBILL = "probill";
+
 
     public SharedPreferencesManager(Context context) {
         this.context = context;
@@ -175,5 +177,13 @@ public class SharedPreferencesManager {
     public void setScanLon(String value)
     {
         mInstance.put(SCAN_LON, value);
+    }
+
+    public String getScanProbill() {
+        return mInstance.getString(SCAN_PROBILL,"");
+    }
+
+    public void setScanProbill(String value){
+        mInstance.put(SCAN_PROBILL, value);
     }
 }

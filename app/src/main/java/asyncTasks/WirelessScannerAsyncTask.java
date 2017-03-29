@@ -48,7 +48,7 @@ public class WirelessScannerAsyncTask extends AsyncTask<String, String, String>{
         dialog.show();
 
     }
-//TEST
+
     @Override
     protected String doInBackground(String... strings) {
         Log.i("Wifi"," doIn");
@@ -83,32 +83,15 @@ public class WirelessScannerAsyncTask extends AsyncTask<String, String, String>{
 
         if( SSID != null && networkPassword != null )
         {
-//            WifiInfo wifiinfo = wifiHelper.getWifiManager(context).getConnectionInfo();
-//            Log.i("Wifi", "wifiinfo.getSupplicantState() ->" + wifiinfo.getSupplicantState());
-////            if (wifiinfo.getSupplicantState() == SupplicantState.COMPLETED)
-////            {
-////                Log.i("Wifi", "!wifiinfo.getSSID().contains(SSID) ->" + wifiinfo.getSSID().contains(SSID));
-//
-//                if ( !wifiinfo.getSSID().contains(SSID) ) {
-//                    Log.i("Wifi", "wifiinfo.getSupplicantState() in 2nd if wifiinfo.getSSID() ->" + wifiinfo.getSSID());
-//                    wifiHelper.disconnectFromWifi();
-//                    try {
-//                        Thread.sleep(2000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
             wifiHelper.connectToSelectedNetwork(this.SSID, this.networkPassword);
 
-//            while (wifiinfo.getSupplicantState() != SupplicantState.COMPLETED) {
-                try {
-                    Log.i("Wifi", "sleep");
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-//            }
+            try {
+                Log.i("Wifi", "sleep");
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
 
         return null;
