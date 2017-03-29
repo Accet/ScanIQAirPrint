@@ -3,6 +3,8 @@ package net.scaniq.scaniqairprint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +21,8 @@ import asyncTasks.NewUserEmail;
 import helperClasses.ConfirmationEmailManager;
 import helperClasses.DatabaseManager;
 import helperClasses.SharedPreferencesManager;
+
+import static net.scaniq.scaniqairprint.ScaniqMainActivity.PERMISSION_REQUEST_CODE;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -45,7 +49,10 @@ public class MainActivity extends AppCompatActivity{
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
+        if(!(hasPermissions()))
+        {
+            requestPermissions();
+        }
         sharedInstance = SharedPreferencesManager.getInstance(this);
         mDbManager = DatabaseManager.getInstance();
 
@@ -227,5 +234,32 @@ public class MainActivity extends AppCompatActivity{
                     });
         }
         return emailNotif;
+    }
+
+    private boolean hasPermissions()
+    {
+        int res = 0;
+
+        String[] permissions = new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE,android.Manifest.permission.CAMERA,android.Manifest.permission.ACCESS_FINE_LOCATION};
+
+        for ( String perms : permissions)
+        {
+            res = checkCallingOrSelfPermission(perms);
+
+            if(!(res == PackageManager.PERMISSION_GRANTED)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void requestPermissions()
+    {
+        String[] permissions = new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE,android.Manifest.permission.CAMERA,android.Manifest.permission.ACCESS_FINE_LOCATION};
+
+        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M )
+        {
+            requestPermissions(permissions,PERMISSION_REQUEST_CODE);
+        }
     }
 }

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import asyncTasks.AfterScanningAsyncTask;
 import asyncTasks.WirelessScannerAsyncTask;
@@ -34,10 +35,9 @@ public class ScaniqMainActivity extends AppCompatActivity {
     private TextView scaniqID = null;
     private Button cancelCCEmail = null;
     private Button cancelFax = null;
-    private BarcodeProcessor barcodeProcessor;
     private WifiHelper wifi;
 
-    private static final int PERMISSION_REQUEST_CODE = 123;
+    public static final int PERMISSION_REQUEST_CODE = 123;
     private static final int SCANSNAP_REQ = 100;
     private String additionalEmail = "";
     private String validFaxNumber = "";
@@ -59,7 +59,6 @@ public class ScaniqMainActivity extends AppCompatActivity {
         }
 
         wifi = new WifiHelper(this);
-        barcodeProcessor = new BarcodeProcessor(this);
     }
 
     private void gatherAllControls() {
@@ -268,13 +267,8 @@ public class ScaniqMainActivity extends AppCompatActivity {
                 //Start sending files
                 disconnectScanner();
                 //Get the CC if entered.....
-                if (LocalFileManager.getInstance().getFilesCount() > 0) {
-                    File[] files = LocalFileManager.getInstance().getCompatibleFiles();
-//                    for (File file: files){
-//                        String barcode = barcodeProcessor.scanForBarcodes(file);
-//                        Toast.makeText(this, barcode, Toast.LENGTH_LONG).show();
-//                        Log.i("BARCODE", "BARCODE -> " + barcode);
-//                    }
+                File[] files = LocalFileManager.getInstance().getCompatibleFiles();
+                if (files.length > 0) {
                     new AfterScanningAsyncTask(this).execute(additionalEmail,validFaxNumber);
                 } else {
                     Toast.makeText(this,getString(R.string.no_files), Toast.LENGTH_SHORT).show();
@@ -291,7 +285,7 @@ public class ScaniqMainActivity extends AppCompatActivity {
 //            boolean removed = wifi.removeFromConfiguration(id);
 //            Log.i("Scan MAin", "removed -> " + removed);
             wifi.disconnectFromWifi();
-//            wifi.disableWifi();
+            wifi.disableWifi();
 //            wifi.connectToSelectedNetwork("BEACONTREE", "!beacon1141?");
         }
     }

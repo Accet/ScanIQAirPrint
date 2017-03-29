@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import helperClasses.AlertBoxBuilder;
+import helperClasses.BarcodeProcessor;
 import helperClasses.DatabaseManager;
 import helperClasses.EmailSender;
 import helperClasses.LocalFileManager;
@@ -41,6 +42,8 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
     private WifiHelper wifi;
     private String ccMail;
     private String bccMail;
+    private BarcodeProcessor barcodeProcessor;
+    private int isBarcodeEnabled;
 
     public AfterScanningAsyncTask(Context context) {
         this.context = context;
@@ -52,6 +55,7 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
         super.onPreExecute();
 
         wifi = new WifiHelper(context.getApplicationContext());
+        barcodeProcessor = new BarcodeProcessor(context);
 
         dialog = new ProgressDialog(context);
         dialog.setCancelable(false);
@@ -94,13 +98,14 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
 
             Connection dbCon = dbManager.getConnection(context);
             ResultSet result = dbManager.executeSelecteQuery(dbCon,
-                    "SELECT RR_mailCC, RR_mailBCC FROM RR_Settings WHERE RR_ID = "
+                    "SELECT RR_mailCC, RR_mailBCC, RR_barcodeMode FROM RR_Settings WHERE RR_ID = "
                             + SharedPreferencesManager.getInstance(context).getScaniqRrid(),
                     context);
             try {
                 while (result.next()) {
                     ccMail = result.getString("RR_mailCC");
                     bccMail = result.getString("RR_mailBCC");
+                    isBarcodeEnabled = result.getInt("RR_barcodeMode");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -112,15 +117,29 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
                 dbManager.closeConnection(dbCon, context);
             }
 
-
-            sendToFTP();
-
             //To send mail and store data in DB
             File[] filestoSend = mLocalFileManager.globalFileArray;
             int tempCount = mLocalFileManager.getFilesCount();
+            ArrayList<String> barcodes = new ArrayList<>();
+            String path = LocalFileManager.getInstance().getAbsoulteFilePath();
+            for (File file: filestoSend){
+                if (isBarcodeEnabled == 1) {
+                    String barcode = barcodeProcessor.scanForBarcodes(file);
+                    if (!barcode.equals("")) {
+                        barcodes.add(barcode);
+                        Log.i("BARCODE", "BARCODE -> " + barcode);
+                        File newFile = new File(path, createFileName(barcode));
+                        file.renameTo(newFile);
+                    }
+                }
+            }
 
+            filestoSend = mLocalFileManager.getCompatibleFiles();
+
+            sendToFTP();
 
             for (File tempFile : filestoSend) {
+
                 publishProgress("Play Sound",""+tempCount--);
                 storeDataIntoDatabase(tempFile,additionalEmail,validFaxNumber);
 
@@ -178,7 +197,6 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
                 break;
             default :
                 if (!updates.equals("")) {
-
                     //There is a file
                     //DETECT NUMBER OF PAGES AND CALL PAGES SOUND
                     PdfReader doc;
@@ -190,7 +208,6 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
                         Toast.makeText(context, pages + " page(s) scanned.", Toast.LENGTH_LONG).show();
 
                     } catch (Exception e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
 
@@ -224,6 +241,11 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
     {
 //        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)).format(new Date());
+    }
+
+    private String createFileName(String barcode)
+    {
+        return barcode + "_" + (new SimpleDateFormat("yyyy_MM_dd_HH_mm", Locale.US)).format(new Date()) + ".pdf";
     }
 
     private int getPagesFromFile(File file){

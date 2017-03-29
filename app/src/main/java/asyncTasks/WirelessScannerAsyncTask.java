@@ -32,7 +32,7 @@ public class WirelessScannerAsyncTask extends AsyncTask<String, String, String>{
 
     protected void onPreExecute() {
         super.onPreExecute();
-
+        SSID = "";
         dialog = new ProgressDialog(context);
         dialog.setCancelable(false);
         dialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
