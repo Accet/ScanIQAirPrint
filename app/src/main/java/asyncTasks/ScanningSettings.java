@@ -67,6 +67,10 @@ public class ScanningSettings extends AsyncTask<String, String, String> {
             if (isProbillNumberActive == 1) {
                 publishProgress("probill");
             }
+            else
+            {
+                publishProgress("no probill");
+            }
         } else {
             publishProgress("No connection");
         }
@@ -97,8 +101,12 @@ public class ScanningSettings extends AsyncTask<String, String, String> {
                 dialog.dismiss();
                 String probillNumber = showIDDialog();
                 if (probillNumber != null && !probillNumber.equals("")) {
-                    new WirelessScannerAsyncTask(context).execute();
+//                    new WirelessScannerAsyncTask(context).execute();
                 }
+                break;
+            case "no probill":
+                dialog.dismiss();
+                new WirelessScannerAsyncTask(context).execute();
                 break;
             default:
                 break;
@@ -157,6 +165,8 @@ public class ScanningSettings extends AsyncTask<String, String, String> {
                 //Do stuff, possibly set wantToCloseDialog to true then...
                 if (!wantToCloseDialog)
                     alertDialog.dismiss();
+                Log.i("Probill","->"+userInput.getText().toString().trim());
+                new WirelessScannerAsyncTask(context).execute();
                 //else dialog stays open. Make sure you have an obvious way to close the dialog especially if you set cancellable to false.
             }
         });
