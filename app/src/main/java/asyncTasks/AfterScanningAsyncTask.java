@@ -193,7 +193,7 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
                 break;
             case "Alert":
                 dialog.dismiss();
-                AlertBoxBuilder.AlertBox(context,"Error","Some error appeared. Try scan again please.");
+                AlertBoxBuilder.AlertBox(context,"Error","Some error appeared. Try scanning again please.");
                 break;
             default :
                 if (!updates.equals("")) {

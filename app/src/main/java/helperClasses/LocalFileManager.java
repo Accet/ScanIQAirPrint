@@ -51,11 +51,12 @@ public class LocalFileManager {
     {
         if(globalFileArray.length != 0)
         {
+            boolean temp = false;
             File[] filestoSend = globalFileArray;
             for (File tempFile : filestoSend) {
-
-                return new File(tempFile.getAbsolutePath()).getAbsoluteFile().delete();
+                temp = new File(tempFile.getAbsolutePath()).getAbsoluteFile().delete();
             }
+            return temp;
         }
         return false;
     }

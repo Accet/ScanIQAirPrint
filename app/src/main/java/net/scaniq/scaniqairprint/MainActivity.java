@@ -18,9 +18,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import asyncTasks.NewUserEmail;
+import helperClasses.AlertBoxBuilder;
 import helperClasses.ConfirmationEmailManager;
 import helperClasses.DatabaseManager;
 import helperClasses.SharedPreferencesManager;
+import helperClasses.WifiHelper;
 
 import static net.scaniq.scaniqairprint.ScaniqMainActivity.PERMISSION_REQUEST_CODE;
 
@@ -149,27 +151,6 @@ public class MainActivity extends AppCompatActivity{
         } else {
             launchScanning();
         }
-
-        //SELECT `RR_ID` FROM `RR_Settings` WHERE `RR_mailTO` = "savanpatel39@gmail.com" ORDER BY `RR_ID` DESC LIMIT 1;
-        ///////////////
-//        new ReviewActivation(this).execute(mailto, "", null);
-//
-//        if (sharedInstance.getScaniqActive() <= 0 ){
-//
-//            registrationBtn.setText("Register with a different account");
-//
-//            enterEmailText.setText("We are validating your email address. Please check your email " +
-//                    mailto + " for further instructions.");
-//
-//        }
-//        else {
-//            sharedInstance.setScaniqEmail(false);
-//        }
-//
-//
-//        Intent intent = new Intent(this,ScaniqMainActivity.class);
-//        finish();
-//        startActivity(intent);
     }
 
 
@@ -196,16 +177,23 @@ public class MainActivity extends AppCompatActivity{
     //Registration Button clicked event
     public void registrationClicked(View view){
         //User is new, create a new account
-        String emailAddress = getValidEmailFromEmailTextField();
-        if(!emailAddress.equals(""))
+        WifiHelper wifiHelper = new WifiHelper(this);
+        if (wifiHelper.hasActiveInternetConnection(this))
         {
-            String nemail = emailAddress.trim();
-            checkUserRegistrationClick(nemail);
-//            new NewUserEmail(this).execute(nemail, "", null);
-//            sharedInstance.setScaniqMailto(nemail);
-//            getEmailNotif().show();
+            String emailAddress = getValidEmailFromEmailTextField();
+            if(!emailAddress.equals(""))
+            {
+                String nemail = emailAddress.trim();
+                checkUserRegistrationClick(nemail);
+        //            new NewUserEmail(this).execute(nemail, "", null);
+        //            sharedInstance.setScaniqMailto(nemail);
+        //            getEmailNotif().show();
+            }
         }
-
+        else
+        {
+            AlertBoxBuilder.AlertBox(this,"Oops!","Please check your internet connection.");
+        }
     }
 
     //Dialog for alert of registration
