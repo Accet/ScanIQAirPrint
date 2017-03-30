@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scaniq_main"
     android:layout_width="match_parent"
@@ -8,80 +8,60 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="net.scaniq.scaniqairprint.ScaniqMainActivity">
 
-
-    <TextView
-        android:id="@+id/textViewPrint"
-        android:layout_width="160dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/printBtn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="34dp"
-        android:text=""
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:layout_height="30dp"
-        android:id="@+id/scaniqID"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        style="?android:attr/listSeparatorTextViewStyle"
-        android:layout_alignParentTop="true"
-        android:layout_alignBottom="@+id/scaniqIDLabel"
-        android:textSize="18sp"
-        android:layout_toRightOf="@+id/scaniqIDLabel"
-        android:text="ID"
-        android:layout_width="150dp"
-        android:layout_alignRight="@+id/scanBtn"
-        android:layout_alignEnd="@+id/scanBtn"
-        android:textColor="#66BB6A" />
+        <TextView
+            android:id="@+id/scaniqIDLabel"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="ScanIQ ID :"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/scaniqIDLabel"
-        style="?android:attr/listSeparatorTextViewStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:text="SCAN ID :"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        <TextView
+            android:layout_height="30dp"
+            android:id="@+id/scaniqID"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_alignParentTop="true"
+            android:textSize="18sp"
+            android:text="ID"
+            android:layout_width="match_parent"
+            android:layout_alignRight="@+id/scanBtn"
+            android:textColor="#66BB6A" />
 
-    <ImageButton
-        android:id="@+id/scanBtn"
-        android:background="@null"
-        android:contentDescription="scan"
-        android:src="@drawable/scan_btn"
-        android:gravity="center_horizontal"
-        android:layout_width="wrap_content"
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="scanBtnClicked"
-        android:layout_below="@+id/scaniqID"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/scanBtn"
+            android:background="@null"
+            android:src="@drawable/scan_btn"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="scanBtnClicked"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/mainLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:orientation="vertical"
-        android:layout_below="@+id/scanBtn">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Status"
-                android:visibility="invisible"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal" />
-        </LinearLayout>
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -97,7 +77,7 @@
                     android:id="@+id/ccEmailAddress"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="CC : savanpatel39@gmail.com"
+                    android:text="CC : "
                     android:layout_alignParentLeft="true"
                     android:visibility="invisible"
                     android:layout_toLeftOf="@+id/cancelCCEmail"
@@ -145,7 +125,7 @@
 
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <ImageView
@@ -154,7 +134,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="0dp"
                     android:background="@null"
-                    android:src="@drawable/add_img" />
+                    android:src="@drawable/add_img"
+                    android:layout_gravity="center_horizontal"/>
 
             </LinearLayout>
 
@@ -162,26 +143,45 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                >
+                android:layout_gravity="center_horizontal"
+                android:weightSum="1">
 
-                <ImageButton
-                    android:id="@+id/ccEmailBtn"
-                    android:layout_width="180dp"
-                    android:layout_height="wrap_content"
-                    android:onClick="ccEmailBtnClicked"
-                    android:layout_marginLeft="-15dp"
-                    android:background="@null"
-                    android:src="@drawable/email3dbtn"
-                    android:layout_gravity="left|center_vertical|center_horizontal" />
+                <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:layout_gravity="center_horizontal">
 
-                <ImageButton
-                    android:id="@+id/faxBtn"
-                    android:layout_width="180dp"
+
+                    <ImageButton
+                        android:id="@+id/ccEmailBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="ccEmailBtnClicked"
+                        android:layout_marginLeft="0dp"
+                        android:background="@null"
+                        android:layout_marginStart="5dp"
+                        android:src="@drawable/email3dbtn"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:onClick="faxBtnClicked"
-                    android:background="@null"
-                    android:src="@drawable/fax3dbtn"
-                    android:layout_gravity="right|center_vertical|center_horizontal" />
+                    android:layout_weight="0.5"
+                    android:layout_gravity="center_horizontal">
+
+                    <ImageButton
+                        android:id="@+id/faxBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="faxBtnClicked"
+                        android:background="@null"
+                        android:layout_marginStart="5dp"
+                        android:src="@drawable/fax3dbtn"
+                        />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -196,10 +196,7 @@
         android:layout_height="30dp"
         android:gravity="bottom"
         android:text="PRINT"
-        android:layout_below="@id/mainLinearLayout"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_marginTop="18dp" />
 
     <ImageButton
@@ -209,8 +206,6 @@
         android:background="@null"
         android:src="@drawable/print3dbw"
         android:onClick="printDocument"
-        android:layout_below="@+id/printLabel"
-        android:layout_alignRight="@+id/textViewPrint"
-        android:layout_alignEnd="@+id/textViewPrint"
-        android:layout_marginTop="20dp" />
-</RelativeLayout>
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"/>
+</LinearLayout>
