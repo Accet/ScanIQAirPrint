@@ -259,7 +259,6 @@ public class ScaniqMainActivity extends AppCompatActivity {
         scaniqID.setText(MYSQLRRuid);
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        Log.i("Result After Scan", "resultCode -> " + resultCode);

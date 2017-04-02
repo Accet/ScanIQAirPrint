@@ -21,20 +21,19 @@
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:text="ScanIQ ID :"
+            android:text="Scan  ID :"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:layout_height="30dp"
             android:id="@+id/scaniqID"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
             android:layout_alignParentTop="true"
-            android:textSize="18sp"
             android:text="ID"
-            android:layout_width="match_parent"
-            android:layout_alignRight="@+id/scanBtn"
-            android:textColor="#66BB6A" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#66BB6A"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
