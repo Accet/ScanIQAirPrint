@@ -25,7 +25,8 @@
         android:inputType="textEmailAddress"
         android:layout_marginTop="25dp"
         android:layout_below="@+id/enter_email_text"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:padding="12dp">
         <requestFocus />
     </EditText>
 

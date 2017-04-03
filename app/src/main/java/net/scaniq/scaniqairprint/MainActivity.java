@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity{
     private TextView enterEmailText = null;
     private Button registrationBtn = null;
 
+    private String TAG = "MAIN";
+
     //Shared Preferences Singleton Instance
     public static SharedPreferencesManager sharedInstance = null;
     //Database Manager Helper Singleton Instance
@@ -59,7 +61,6 @@ public class MainActivity extends AppCompatActivity{
         mDbManager = DatabaseManager.getInstance();
 
         gatherAllControls(); //Wire all layout control to this activity
-//        checkUserRegistration();
     }
 
     @Override
@@ -68,15 +69,6 @@ public class MainActivity extends AppCompatActivity{
         checkShared();
     }
 
-    private String getValidEmailFromEmailTextField()
-    {
-        String emailAddress = emailTextField.getText().toString();
-        if (emailAddress.trim().equals("") || !emailAddress.matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"))
-        {
-            Toast.makeText(getApplicationContext(), getString(R.string.enter_valid_email),Toast.LENGTH_SHORT).show();
-        }
-        return emailAddress;
-    }
     //Connects layout controls to this activity
     private void gatherAllControls() {
         emailTextField = (EditText) findViewById(R.id.emailTextField);
@@ -86,22 +78,28 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void checkShared() {
+//        Log.d(TAG, "sharedInstance.getScaniqMailto() -> " + sharedInstance.getScaniqMailto());
         if( !sharedInstance.getScaniqMailto().equals("")) {
             if (sharedInstance.getScaniqActive() == 1){
                 launchScanning();
             } else {
+//                Log.d(TAG, "sharedInstance.getScaniqActive() -> " + sharedInstance.getScaniqActive());
                 checkUserRegistrationClick(sharedInstance.getScaniqMailto());
             }
         }
     }
     //Checks user exist or not and if not the do registration
     private void checkUserRegistrationClick(String userEmail){
+        Log.d(TAG, "sharedInstance.getScaniqMailto() -> " + sharedInstance.getScaniqMailto());
 
-        if( sharedInstance.getScaniqMailto().equals(""))
+        if(sharedInstance.getScaniqMailto().equals(""))
         {
+
             Connection con = mDbManager.getConnection(this);
             ResultSet userInfo = userExistInDatabase(con, userEmail);
+
             try {
+
                 if (userInfo.next()) {
                     String user_rrid = userInfo.getString(1);
                     String user_md5 = userInfo.getString(2);
@@ -110,6 +108,7 @@ public class MainActivity extends AppCompatActivity{
                     sharedInstance.setScaniqMailto(user_mailTo);
                     sharedInstance.setScaniqMd5(user_md5);
                     sharedInstance.setScaniqRrid(user_rrid);
+
                     if (user_isActive != 1) {
                         resendEmail(user_md5);
                     } else {
@@ -129,7 +128,9 @@ public class MainActivity extends AppCompatActivity{
                 mDbManager.closeConnection(con,this);
             }
         } else if (sharedInstance.getScaniqActive() != 1) {
-                Connection con = mDbManager.getConnection(this);
+            Log.d(TAG, "sharedInstance.getScaniqActive() -> " + sharedInstance.getScaniqActive());
+
+            Connection con = mDbManager.getConnection(this);
                 ResultSet userInfo = userExistInDatabase(con, userEmail);
                 try {
                     if (userInfo.next()) {
@@ -140,6 +141,12 @@ public class MainActivity extends AppCompatActivity{
                             sharedInstance.setScaniqActive(userInfo.getInt(4));
                             mDbManager.closeConnection(con,this);
                             launchScanning();
+                        }
+                    } else {
+                        if (!sharedInstance.getScaniqMailto().equals(userEmail)) {
+                            sharedInstance.setScaniqMailto(userEmail);
+                            new NewUserEmail(this).execute(userEmail, "", null);
+                            getEmailNotif(getString(R.string.registration_done),getString(R.string.register_msg),getString(R.string.ok_btn),"").show();
                         }
 
                     }
@@ -152,8 +159,6 @@ public class MainActivity extends AppCompatActivity{
             launchScanning();
         }
     }
-
-
 
     private void launchScanning() {
         Intent intent = new Intent(this,ScaniqMainActivity.class);
@@ -169,10 +174,9 @@ public class MainActivity extends AppCompatActivity{
 
     private ResultSet userExistInDatabase(Connection con, String userEmail) {
         String query = "SELECT RR_ID, RR_MD5, RR_mailTO, RR_ActiveMobile FROM RR_Settings WHERE RR_mailTO = \"" + userEmail + "\" ORDER BY RR_ID DESC LIMIT 1 ; ";
-        Log.i("Q","->"+query);
-        ResultSet userInfo = mDbManager.executeSelecteQuery(con, query,this);
+        Log.i(TAG,"->"+query);
 
-        return userInfo;
+        return mDbManager.executeSelecteQuery(con, query, this);
     }
     //Registration Button clicked event
     public void registrationClicked(View view){
@@ -180,20 +184,23 @@ public class MainActivity extends AppCompatActivity{
         WifiHelper wifiHelper = new WifiHelper(this);
         if (wifiHelper.hasActiveInternetConnection(this))
         {
-            String emailAddress = getValidEmailFromEmailTextField();
-            if(!emailAddress.equals(""))
+            String emailAddress = emailTextField.getText().toString();
+            if(isValidEmail(emailAddress))
             {
-                String nemail = emailAddress.trim();
-                checkUserRegistrationClick(nemail);
-        //            new NewUserEmail(this).execute(nemail, "", null);
-        //            sharedInstance.setScaniqMailto(nemail);
-        //            getEmailNotif().show();
+                String newmail = emailAddress.trim();
+                checkUserRegistrationClick(newmail);
+            } else {
+                emailTextField.setError("Invalid Email");
             }
         }
         else
         {
             AlertBoxBuilder.AlertBox(this,"Oops!","Please check your internet connection.");
         }
+    }
+
+    public static boolean isValidEmail(CharSequence target) {
+        return target != null && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
     //Dialog for alert of registration
