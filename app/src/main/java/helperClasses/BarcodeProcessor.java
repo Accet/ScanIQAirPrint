@@ -6,7 +6,6 @@ import android.graphics.pdf.PdfRenderer;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.util.SparseArray;
-import android.widget.Toast;
 
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -49,7 +48,6 @@ public class BarcodeProcessor {
                 Log.e(LOG_TAG, "Detector dependencies are not yet downloaded");
             }
         }
-
         return barcodeText;
     }
 
@@ -74,12 +72,10 @@ public class BarcodeProcessor {
 
                     bitmaps.add(bitmap);
 
-                    // close the page
                     page.close();
 
                 }
 
-                // close the renderer
                 renderer.close();
             } catch (Exception ex) {
                 ex.printStackTrace();
