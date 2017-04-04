@@ -8,60 +8,75 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/DarkFlat"
     tools:context="net.scaniq.scaniqairprint.MainActivity">
 
     <ImageView
         android:id="@+id/scanIQLogo"
-        android:layout_width="165dp"
-        android:layout_height="184dp"
-        android:src="@drawable/icon_128x128"
-        android:layout_centerHorizontal="true" />
-
-    <EditText
-        android:id="@+id/emailTextField"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:layout_marginTop="25dp"
-        android:layout_below="@+id/enter_email_text"
         android:layout_centerHorizontal="true"
-        android:padding="12dp">
-        <requestFocus />
-    </EditText>
+        android:contentDescription="@string/logo"
+        android:src="@drawable/scan_logo_main" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/enter_email_text"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp">
+        <EditText
+            android:id="@+id/emailTextField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:padding="12dp"
+            android:textColor="@color/whiteFlat" />
+    </android.support.design.widget.TextInputLayout>
+
 
     <Button
         android:id="@+id/registrationBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register"
+        android:layout_below="@+id/input_layout_email"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/buttonshape"
         android:onClick="registrationClicked"
-        android:layout_below="@+id/emailTextField"
-        android:layout_centerHorizontal="true" />
+        android:text="Register" />
 
     <TextView
         android:id="@+id/enter_email_text"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/scanIQLogo"
+        android:layout_marginTop="16dp"
         android:gravity="center|bottom"
         android:text="Please enter your email"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_below="@+id/scanIQLogo"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textColor="@color/whiteFlat" />
 
     <TextView
         android:id="@+id/messageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/whiteFlat"
         android:text=""
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_below="@+id/registrationBtn"
         android:layout_alignLeft="@+id/registrationBtn"
         android:layout_alignStart="@+id/registrationBtn"
         android:layout_marginTop="27dp" />
+
+
 
 
 </RelativeLayout>

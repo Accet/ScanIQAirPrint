@@ -32,7 +32,8 @@
             android:value="barcode"/>
 
         <activity android:name=".MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/MainActivityTheme">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -59,7 +60,11 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ScaniqMainActivity"></activity>
+        <activity
+            android:name=".ScaniqMainActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
     </application>
 
 </manifest>

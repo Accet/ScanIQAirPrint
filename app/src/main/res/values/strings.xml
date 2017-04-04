@@ -68,5 +68,7 @@
     <string name="registration_done">Registration done</string>
     <string name="register_msg">Thank you for registering. You will receive an email shortly.</string>
     <string name="ok_btn">Ok</string>
+    <string name="logo">logo</string>
+    <string name="err_msg_email">Invalid E-mail</string>
 
 </resources>
