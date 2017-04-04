@@ -1,7 +1,6 @@
 package net.scaniq.scaniqairprint;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,11 +14,10 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,9 +34,8 @@ public class MainActivity extends AppCompatActivity{
 
     //Controls
     private EditText emailTextField = null;
-    private TextView messageTextView = null;
-    private TextView enterEmailText = null;
-    private Button registrationBtn = null;
+    private TextView enterEmailText;
+    private Button registrationBtn;
     private TextInputLayout emailWrapper;
 
     private String TAG = "MAIN";
@@ -49,9 +46,7 @@ public class MainActivity extends AppCompatActivity{
     DatabaseManager mDbManager = null;
 
     //Extras
-    public static int scaniq_active = -1;
     public static String MYSQLRRuid = "";
-    public static boolean isSharedPreferencesStored = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +74,7 @@ public class MainActivity extends AppCompatActivity{
     //Connects layout controls to this activity
     private void gatherAllControls() {
         emailTextField = (EditText) findViewById(R.id.emailTextField);
-        messageTextView = (TextView) findViewById(R.id.messageTextView);
+        TextView messageTextView = (TextView) findViewById(R.id.messageTextView);
         enterEmailText = (TextView) findViewById(R.id.enter_email_text);
         registrationBtn = (Button) findViewById(R.id.registrationBtn);
 
@@ -120,7 +115,7 @@ public class MainActivity extends AppCompatActivity{
                     sharedInstance.setScaniqRrid(user_rrid);
 
                     if (user_isActive != 1) {
-                        resendEmail(user_md5);
+                        resendEmail();
                     } else {
                         sharedInstance.setScaniqActive(userInfo.getInt(4));
                         mDbManager.closeConnection(con,this);
@@ -145,8 +140,7 @@ public class MainActivity extends AppCompatActivity{
                 try {
                     if (userInfo.next()) {
                         if (userInfo.getInt(4) != 1) {
-                            String user_md5 = userInfo.getString(2);
-                            resendEmail(user_md5);
+                            resendEmail();
                         } else {
                             sharedInstance.setScaniqActive(userInfo.getInt(4));
                             mDbManager.closeConnection(con,this);
@@ -176,7 +170,7 @@ public class MainActivity extends AppCompatActivity{
         startActivity(intent);
     }
 
-    private void resendEmail(String md5) {
+    private void resendEmail() {
         getEmailNotif("Activation Required","Please confirm your account activation!\nDo you want to resend the confirmation email?" ,"Yes","Cancel").show();
     }
 
@@ -251,7 +245,7 @@ public class MainActivity extends AppCompatActivity{
 
     private boolean hasPermissions()
     {
-        int res = 0;
+        int res;
 
         String[] permissions = new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE,android.Manifest.permission.CAMERA,android.Manifest.permission.ACCESS_FINE_LOCATION};
 
