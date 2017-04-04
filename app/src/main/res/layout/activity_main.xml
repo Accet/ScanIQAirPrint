@@ -76,7 +76,4 @@
         android:layout_alignStart="@+id/registrationBtn"
         android:layout_marginTop="27dp" />
 
-
-
-
 </RelativeLayout>
