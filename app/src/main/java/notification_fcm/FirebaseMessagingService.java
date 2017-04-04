@@ -43,7 +43,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setAutoCancel(true)
-                .setContentTitle("ScanIQAir 2.0")
+                .setContentTitle("ScanIQ Air")
                 .setContentText(message)
                 .setSmallIcon(R.drawable.icon_128x128)
                 .setContentIntent(pendingIntent).setDefaults(Notification.DEFAULT_SOUND);

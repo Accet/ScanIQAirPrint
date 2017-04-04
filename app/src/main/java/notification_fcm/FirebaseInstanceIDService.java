@@ -1,12 +1,17 @@
 package notification_fcm;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
 import java.io.IOException;
+import java.sql.Connection;
 
+import helperClasses.DatabaseManager;
+import helperClasses.SharedPreferencesManager;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -28,27 +33,36 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
         sharedToken = token;
         Log.i("Token ",""+token);
         Log.i("RRuid",""+MYSQLRRuid);
-        registerToken(token);
+        registerToken(token,this);
     }
 
-    private void registerToken(String token) {
+    private void registerToken(String token,Context context) {
+        Log.i("RRuid","registerToken"+token);
 
-        OkHttpClient client = new OkHttpClient();
-        RequestBody body = new FormBody.Builder()
-                .add("Token",token)
-                .add("Unit",MYSQLRRuid)
-                .build();
-
-        Request request = new Request.Builder()
-                .url("http://scaniq.secureserverdot.com/FCM/register_FCMToken.php")
-                .post(body)
-                .build();
-
-        try {
-            client.newCall(request).execute();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(!SharedPreferencesManager.getInstance(context).getScanFcmtoken().equals(token) && !MYSQLRRuid.equals("")) {
+            SharedPreferencesManager.getInstance(context).setScanFcmtoken(token);
+            Connection con = DatabaseManager.getInstance().getConnection(context);
+            DatabaseManager.getInstance().executeStoreFCMTokenPreparedStatement(con, token, MYSQLRRuid, context);
+            DatabaseManager.getInstance().closeConnection(con,context);
         }
+
+
+//        OkHttpClient client = new OkHttpClient();
+//        RequestBody body = new FormBody.Builder()
+//                .add("Token",token)
+//                .add("Unit",MYSQLRRuid)
+//                .build();
+//
+//        Request request = new Request.Builder()
+//                .url("http://scaniq.secureserverdot.com/FCM/register_FCMToken.php")
+//                .post(body)
+//                .build();
+//
+//        try {
+//            client.newCall(request).execute();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
 

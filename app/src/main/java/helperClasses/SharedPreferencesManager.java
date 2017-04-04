@@ -23,7 +23,7 @@ public class SharedPreferencesManager {
     private static final String SCAN_LAT = "scan_latitude";
     private static final String SCAN_LON = "scan_longitude";
     private static final String SCAN_PROBILL = "probill";
-
+    private static final String SCAN_FCMTOKEN = "fcmToken";
 
     public SharedPreferencesManager(Context context) {
         this.context = context;
@@ -186,4 +186,15 @@ public class SharedPreferencesManager {
     public void setScanProbill(String value){
         mInstance.put(SCAN_PROBILL, value);
     }
+
+
+    public  String getScanFcmtoken() {
+        return mInstance.getString(SCAN_FCMTOKEN,"") ;
+    }
+
+    public void setScanFcmtoken(String value){
+        mInstance.put(SCAN_FCMTOKEN, value);
+    }
+
+
 }

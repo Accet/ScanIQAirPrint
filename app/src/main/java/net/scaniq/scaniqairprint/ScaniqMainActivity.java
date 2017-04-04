@@ -16,6 +16,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -25,6 +28,7 @@ import asyncTasks.WirelessScannerAsyncTask;
 import helperClasses.AlertBoxBuilder;
 import helperClasses.BarcodeProcessor;
 import helperClasses.LocalFileManager;
+import helperClasses.SharedPreferencesManager;
 import helperClasses.WifiHelper;
 import static net.scaniq.scaniqairprint.MainActivity.MYSQLRRuid;
 import static net.scaniq.scaniqairprint.MainActivity.sharedInstance;
@@ -49,6 +53,8 @@ public class ScaniqMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scaniq_main);
+
+        Log.i("Shared Token","->"+SharedPreferencesManager.getInstance(this).getScanFcmtoken());
 
         gatherAllControls(); //Wire all layout control to this activity
         setTextToLabels();

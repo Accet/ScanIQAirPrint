@@ -6,6 +6,7 @@ import android.os.Bundle;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -60,9 +61,9 @@ public class DatabaseManager {
         return rs;
     }
 
-    public ResultSet executeRegisterPreparedStatement(Connection con, String emailAccount, String androidID ,String carrierName,Context context){
+    public ResultSet executeRegisterPreparedStatement(Connection con, String emailAccount, String androidID ,String carrierName, String token,Context context){
 
-        String preparedStatement = "{call REGISTER_NEW_UNIT(?,?,?)}";
+        String preparedStatement = "{call REGISTER_NEW_UNIT_T(?,?,?, ?)}";
 
         CallableStatement cs = null;
         ResultSet rs = null;
@@ -71,6 +72,7 @@ public class DatabaseManager {
             cs.setString(1, emailAccount);
             cs.setString(2, androidID);
             cs.setString(3, carrierName);
+            cs.setString(4, token);
 
             boolean hadResults = cs.execute();
             if (hadResults) {
@@ -173,6 +175,19 @@ public class DatabaseManager {
             this.closeConnection(con,context);
             AlertBoxBuilder.AlertBox(context,"Error","Something went wrong while storing data to database...\nPlease rescan the document!");
         }
+    }
 
+    public void executeStoreFCMTokenPreparedStatement(Connection con, String token, String rrid,Context context)
+    {
+        String query = "UPDATE `RR_Settings` SET `RR_FCMToken` = ? WHERE `RR_ID` = ? ;";
+        try {
+            PreparedStatement st = con.prepareStatement(query);
+            st.setString(1,token);
+            st.setString(2,rrid);
+            st.executeUpdate();
+            st.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

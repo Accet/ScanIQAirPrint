@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,6 +45,7 @@ public class NewUserEmail extends AsyncTask<String, String, String> {
             e.printStackTrace();
         }
         //
+
         return null;
     }
 
@@ -55,7 +59,6 @@ public class NewUserEmail extends AsyncTask<String, String, String> {
 
         scaniq_rrid = registerNextUnit(newuser);
 
-//        SharedPreferencesManager.getInstance().setScaniqRrid(scaniq_rrid); //Don't need this line!!!
         MYSQLRRuid = scaniq_rrid;
         SharedPreferencesManager.getInstance().setScaniqEmail(false);
         ConfirmationEmailManager.getInstance().sendMail(newuser,MYSQLRRuid);
@@ -68,7 +71,11 @@ public class NewUserEmail extends AsyncTask<String, String, String> {
         String carrierName = manager.getNetworkOperatorName();// 2nd parameter
         String androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);// 3nd parameter
 
-        ResultSet rs = DatabaseManager.getInstance().executeRegisterPreparedStatement(con,emailAcct,androidId,carrierName,context);
+        FirebaseMessaging.getInstance().subscribeToTopic("message");
+        String token = FirebaseInstanceId.getInstance().getToken();
+
+        ResultSet rs = DatabaseManager.getInstance().executeRegisterPreparedStatement(con,emailAcct,androidId,carrierName, token,context);
+        SharedPreferencesManager.getInstance(context).setScanFcmtoken(token);
 
         String new_scaniq_rrid = "";
         String new_md5 = "";
