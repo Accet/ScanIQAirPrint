@@ -45,25 +45,5 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
             DatabaseManager.getInstance().executeStoreFCMTokenPreparedStatement(con, token, MYSQLRRuid, context);
             DatabaseManager.getInstance().closeConnection(con,context);
         }
-
-
-//        OkHttpClient client = new OkHttpClient();
-//        RequestBody body = new FormBody.Builder()
-//                .add("Token",token)
-//                .add("Unit",MYSQLRRuid)
-//                .build();
-//
-//        Request request = new Request.Builder()
-//                .url("http://scaniq.secureserverdot.com/FCM/register_FCMToken.php")
-//                .post(body)
-//                .build();
-//
-//        try {
-//            client.newCall(request).execute();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
-
-
 }

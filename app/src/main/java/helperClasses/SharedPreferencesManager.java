@@ -24,6 +24,7 @@ public class SharedPreferencesManager {
     private static final String SCAN_LON = "scan_longitude";
     private static final String SCAN_PROBILL = "probill";
     private static final String SCAN_FCMTOKEN = "fcmToken";
+    private static final String SCAN_USER_SERIAl = "scan_user_serial";
 
     public SharedPreferencesManager(Context context) {
         this.context = context;
@@ -197,4 +198,13 @@ public class SharedPreferencesManager {
     }
 
 
+    public String getSCAN_USER_SERIAl()
+    {
+        return mInstance.getString(SCAN_USER_SERIAl,"");
+    }
+
+    public void setSCAN_USER_SERIAl(String value)
+    {
+        mInstance.put(SCAN_USER_SERIAl,value);
+    }
 }
