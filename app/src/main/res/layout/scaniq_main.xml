@@ -1,28 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scaniq_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/DarkFlat"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
     tools:context="net.scaniq.scaniqairprint.ScaniqMainActivity">
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:minHeight="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="@color/colorPrimary">
+
+        <LinearLayout
+            android:id="@+id/back_menu_ll"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:contentDescription="logo"
+                android:src="@drawable/scan_logo_main" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="0.8"
+                android:layout_marginLeft="16dp"
+                android:text="@string/app_name"
+                android:textColor="@color/whiteFlat"
+                android:textSize="@dimen/abc_text_size_title_material" />
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/user_id_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_below="@+id/toolbar">
 
         <TextView
             android:id="@+id/scaniqIDLabel"
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:text="Scan  ID :"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:text="User ID:"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/whiteFlat" />
 
         <TextView
             android:id="@+id/scaniqID"
@@ -32,160 +73,82 @@
             android:layout_alignParentTop="true"
             android:text="ID"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#66BB6A"
+            android:textColor="@color/flat_green"
             android:textSize="18sp" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/scanBtn"
-            android:background="@null"
-            android:src="@drawable/scan_btn"
-            android:gravity="center_horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="scanBtnClicked"
-            android:layout_gravity="center_horizontal" />
-
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/mainLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/user_id_layout"
+        android:layout_marginTop="8dp"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/ccEmailAddress"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="CC : "
-                    android:layout_alignParentLeft="true"
-                    android:visibility="invisible"
-                    android:layout_toLeftOf="@+id/cancelCCEmail"
                     android:layout_alignParentBottom="false"
-                    android:layout_centerVertical="true" />
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/cancelCCEmail"
+                    android:text="CC: "
+                    android:textColor="@color/whiteFlat"
+                    android:visibility="invisible" />
 
                 <Button
                     android:id="@+id/cancelCCEmail"
-                    android:text="X"
-                    android:layout_alignParentRight="true"
-                    android:layout_height="40dp"
                     android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="2dp"
+                    android:background="@drawable/buttonshape"
+                    android:elevation="24dp"
                     android:onClick="ccEmailCancelClicked"
+                    android:text="X"
+                    android:textColor="@color/whiteFlat"
                     android:visibility="invisible"
-                    android:elevation="24dp" />
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
 
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/faxNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Fax : faxNumber"
-                    android:visibility="invisible"
                     android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:text="Fax : faxNumber"
+                    android:textColor="@color/whiteFlat"
+                    android:visibility="invisible" />
 
                 <Button
                     android:id="@+id/cancelFax"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:text="X"
-                    android:onClick="cancelFaxClicked"
-                    android:visibility="invisible"
-                    android:layout_gravity="left|center_vertical|center_horizontal"
                     android:layout_alignParentRight="true"
-                    android:elevation="24dp" />
-
+                    android:layout_gravity="right|center_horizontal"
+                    android:background="@drawable/buttonshape"
+                    android:elevation="24dp"
+                    android:onClick="cancelFaxClicked"
+                    android:text="X"
+                    android:padding="2dp"
+                    android:textColor="@color/whiteFlat"
+                    android:visibility="invisible" />
             </RelativeLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/addimg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="0dp"
-                    android:background="@null"
-                    android:src="@drawable/add_img"
-                    android:layout_gravity="center_horizontal"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center_horizontal"
-                android:weightSum="1">
-
-                <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:layout_gravity="center_horizontal">
-
-
-                    <ImageButton
-                        android:id="@+id/ccEmailBtn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:onClick="ccEmailBtnClicked"
-                        android:layout_marginLeft="0dp"
-                        android:background="@null"
-                        android:layout_marginStart="5dp"
-                        android:src="@drawable/email3dbtn"
-                        />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:layout_gravity="center_horizontal">
-
-                    <ImageButton
-                        android:id="@+id/faxBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="faxBtnClicked"
-                        android:background="@null"
-                        android:layout_marginStart="5dp"
-                        android:src="@drawable/fax3dbtn"
-                        />
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
     </LinearLayout>
 
     <TextView
@@ -196,15 +159,77 @@
         android:gravity="bottom"
         android:text="PRINT"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_marginTop="18dp" />
+        android:textColor="@color/whiteFlat"
+        android:layout_below="@+id/scanBtn"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="31dp" />
 
-    <ImageButton
+    <Button
         android:id="@+id/printBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@null"
-        android:src="@drawable/print3dbw"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/scan_btn_selector"
         android:onClick="printDocument"
+        android:text="Print"
+        android:textColor="@color/whiteFlat"
+        android:textSize="24sp"
+        android:enabled="false"
         android:layout_marginTop="20dp"
-        android:layout_gravity="center_horizontal"/>
-</LinearLayout>
+        android:layout_below="@+id/printLabel"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/scanBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/mainLinearLayout"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/scan_btn_selector"
+        android:onClick="scanBtnClicked"
+        android:text="Scan"
+        android:textColor="@color/whiteFlat"
+        android:textSize="30sp" />
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/multiple_actions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        fab:fab_addButtonColorNormal="@color/colorAccent"
+        fab:fab_addButtonColorPressed="@color/colorAccentPressed"
+        fab:fab_addButtonPlusIconColor="@color/whiteFlat"
+        fab:fab_expandDirection="up"
+        fab:fab_labelStyle="@style/menu_labels_style">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/flat_green"
+            fab:fab_colorPressed="@color/flat_green_pressed"
+            fab:fab_title="Add E-Mail"
+            fab:fab_icon="@android:drawable/sym_action_email"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/flat_green"
+            fab:fab_colorPressed="@color/flat_green_pressed"
+            fab:fab_title="ADD Fax"
+            fab:fab_icon="@android:drawable/ic_menu_call"/>
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+
+</RelativeLayout>

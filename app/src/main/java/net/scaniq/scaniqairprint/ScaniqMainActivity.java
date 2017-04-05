@@ -4,9 +4,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +19,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -41,6 +46,7 @@ public class ScaniqMainActivity extends AppCompatActivity {
     private Button cancelCCEmail = null;
     private Button cancelFax = null;
     private WifiHelper wifi;
+    private FloatingActionsMenu fabMenu;
 
     public static final int PERMISSION_REQUEST_CODE = 123;
     private static final int SCANSNAP_REQ = 100;
@@ -53,6 +59,9 @@ public class ScaniqMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scaniq_main);
+
+        Toolbar tool_bar=(Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(tool_bar);
 
         Log.i("Shared Token","->"+SharedPreferencesManager.getInstance(this).getScanFcmtoken());
 
@@ -74,6 +83,31 @@ public class ScaniqMainActivity extends AppCompatActivity {
         faxNumber = (TextView) findViewById(R.id.faxNumber);
         cancelCCEmail = (Button) findViewById(R.id.cancelCCEmail);
         cancelFax = (Button) findViewById(R.id.cancelFax);
+
+        gatherFAB();
+    }
+
+
+    private void gatherFAB() {
+
+        fabMenu = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
+        final FloatingActionButton actionAddFax = (FloatingActionButton) findViewById(R.id.action_b);
+        actionAddFax.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fabMenu.collapseImmediately();
+                showFaxDialog();
+            }
+        });
+
+        final FloatingActionButton actionAddEmail = (FloatingActionButton) findViewById(R.id.action_a);
+        actionAddEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fabMenu.collapseImmediately();
+                showCCEmailDialog();
+            }
+        });
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,16 +119,6 @@ public class ScaniqMainActivity extends AppCompatActivity {
         new ScanningSettings(this).execute();
 
 //        new WirelessScannerAsyncTask(this).execute();
-    }
-
-    public void ccEmailBtnClicked(View view)
-    {
-        showCCEmailDialog();
-    }
-
-    public void faxBtnClicked(View view)
-    {
-        showFaxDialog();
     }
 
     public void ccEmailCancelClicked(View view)

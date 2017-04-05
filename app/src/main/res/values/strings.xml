@@ -70,7 +70,7 @@
     <string name="ok_btn">Ok</string>
     <string name="logo">logo</string>
     <string name="err_msg_email">Invalid E-mail</string>
-    <string name="register_btn">Register</string>
+    <string name="register_btn">REGISTER</string>
     <string name="please_enter_your_email">Please enter your email</string>
 
 </resources>

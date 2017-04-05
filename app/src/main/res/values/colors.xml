@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#112233</color>
+    <color name="colorPrimaryDark">#112233</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorAccentPressed">#BB4081</color>
+
     <color name="DarkFlat">#112233</color>
     <color name="whiteFlat">#FFFFF8</color>
     <color name="pinkFlat">#FF4081</color>
+    <color name="black_semi_transparent">#B2000000</color>
+    <color name="white_pressed">#f1f1f1</color>
+    <color name="half_black">#808080</color>
+    <color name="flat_green">#66CC99</color>
+    <color name="flat_green_pressed">#1AAA9F</color>
+    <color name="btn_disabled">#B1B1B1</color>
+
+
+
 </resources>

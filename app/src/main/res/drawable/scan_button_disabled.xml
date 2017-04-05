@@ -4,7 +4,7 @@
         android:radius="5dp"
         />
     <solid
-        android:color="@color/colorAccent"
+        android:color="@color/btn_disabled"
         />
     <padding
         android:left="16dp"
@@ -12,8 +12,9 @@
         android:right="16dp"
         android:bottom="0dp"
         />
+    
     <!--<size-->
-        <!--android:width="270dp"-->
-        <!--android:height="40dp"-->
-        <!--/>-->
+    <!--android:width="270dp"-->
+    <!--android:height="40dp"-->
+    <!--/>-->
 </shape>
