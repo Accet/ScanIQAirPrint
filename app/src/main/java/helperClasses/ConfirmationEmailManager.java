@@ -70,7 +70,7 @@ public class ConfirmationEmailManager {
                             "<br>Fujitsu ScanSnap ixSeries" +
                             "<br><br><br>If you have any questions or inquiries please reply to this email or call us at 1-877-421-7226" +
                             "<br><br>Please " +
-                            "<a href='http://scaniq.secureserverdot.com/RRdb/confirm.php?md5=md5tag' > confirm your subscription here. </a><br><br>" +
+                            "<a href='http://scaniq.secureserverdot.com/RRdb/confirm.php?md5=md5tag' > confirm your activation here. </a><br><br>" +
                             "</body></html>";
 
             String str = content.replace("md5tag", MYSQLRRuid);

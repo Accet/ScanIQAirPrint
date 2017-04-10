@@ -348,7 +348,7 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
         SharedPreferencesManager mSharedPreferences = SharedPreferencesManager.getInstance(context);
 
         String from = "noreply@ez2scan.com";
-        String subject = "RR-MOB"+mSharedPreferences.getScaniqRrid().substring(2);
+        String subject = mSharedPreferences.getSCAN_USER_SERIAl();
 
         String to = validFaxNumber + "@srfax.com";
         Log.i("FAX", "to: " + to);
@@ -391,7 +391,7 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
         }
 
         String from = "noreply@ez2scan.com";
-        String subject = "RR-MOB"+mSharedPreferences.getScaniqRrid().substring(2);
+        String subject = mSharedPreferences.getSCAN_USER_SERIAl();
 
         String messageBody = "<html><body>Click <a href=http://scaniq.secureserverdot.com/scans/"+mSharedPreferences.getScaniqMd5()
                 + "/"

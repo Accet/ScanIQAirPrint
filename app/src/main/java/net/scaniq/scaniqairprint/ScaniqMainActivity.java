@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
@@ -32,11 +33,13 @@ import asyncTasks.ScanningSettings;
 import asyncTasks.WirelessScannerAsyncTask;
 import helperClasses.AlertBoxBuilder;
 import helperClasses.BarcodeProcessor;
+import helperClasses.DocumentDownloader;
 import helperClasses.LocalFileManager;
 import helperClasses.SharedPreferencesManager;
 import helperClasses.WifiHelper;
 import static net.scaniq.scaniqairprint.MainActivity.MYSQLRRuid;
 import static net.scaniq.scaniqairprint.MainActivity.sharedInstance;
+import static notification_fcm.FirebaseMessagingService.imageURL;
 
 public class ScaniqMainActivity extends AppCompatActivity {
 
@@ -45,9 +48,9 @@ public class ScaniqMainActivity extends AppCompatActivity {
     private TextView scaniqID = null;
     private Button cancelCCEmail = null;
     private Button cancelFax = null;
+    private Button printBtn = null;
     private WifiHelper wifi;
     private FloatingActionsMenu fabMenu;
-
     public static final int PERMISSION_REQUEST_CODE = 123;
     private static final int SCANSNAP_REQ = 100;
     private String additionalEmail = "";
@@ -77,13 +80,28 @@ public class ScaniqMainActivity extends AppCompatActivity {
         wifi = new WifiHelper(this);
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(!imageURL.equals(""))
+        {
+            new DocumentDownloader(this).execute(imageURL);
+            if( printBtn == null )
+            {
+                printBtn = (Button) findViewById(R.id.printBtn);
+            }
+            printBtn.setBackgroundColor(Color.argb(1,66,204,99));
+        }
+    }
+
     private void gatherAllControls() {
         scaniqID = (TextView) findViewById(R.id.scaniqID);
         ccEmailAddress = (TextView) findViewById(R.id.ccEmailAddress);
         faxNumber = (TextView) findViewById(R.id.faxNumber);
         cancelCCEmail = (Button) findViewById(R.id.cancelCCEmail);
         cancelFax = (Button) findViewById(R.id.cancelFax);
-
+        printBtn = (Button) findViewById(R.id.printBtn);
         gatherFAB();
     }
 
@@ -286,7 +304,7 @@ public class ScaniqMainActivity extends AppCompatActivity {
 
     private void setTextToLabels() {
         MYSQLRRuid = sharedInstance.getScaniqRrid();
-        scaniqID.setText(MYSQLRRuid);
+        scaniqID.setText(sharedInstance.getSCAN_USER_SERIAl());
     }
 
     @Override

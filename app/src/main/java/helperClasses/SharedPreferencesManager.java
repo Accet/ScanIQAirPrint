@@ -188,7 +188,6 @@ public class SharedPreferencesManager {
         mInstance.put(SCAN_PROBILL, value);
     }
 
-
     public  String getScanFcmtoken() {
         return mInstance.getString(SCAN_FCMTOKEN,"") ;
     }
@@ -196,7 +195,6 @@ public class SharedPreferencesManager {
     public void setScanFcmtoken(String value){
         mInstance.put(SCAN_FCMTOKEN, value);
     }
-
 
     public String getSCAN_USER_SERIAl()
     {

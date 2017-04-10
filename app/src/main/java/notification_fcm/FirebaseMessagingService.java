@@ -21,7 +21,7 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
 
-    public static String imageURL;
+    public static String imageURL = "";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {

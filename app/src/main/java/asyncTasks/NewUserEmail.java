@@ -79,12 +79,16 @@ public class NewUserEmail extends AsyncTask<String, String, String> {
 
         String new_scaniq_rrid = "";
         String new_md5 = "";
+        String new_scan_serial = "";
 
         if(rs.next()){
             new_scaniq_rrid = rs.getString(1);
             new_md5 = rs.getString(2);
+            new_scan_serial = rs.getString(3);
+
             SharedPreferencesManager.getInstance().setScaniqRrid(new_scaniq_rrid);
             SharedPreferencesManager.getInstance().setScaniqMd5(new_md5);
+            SharedPreferencesManager.getInstance().setSCAN_USER_SERIAl(new_scan_serial);
         }
         DatabaseManager.getInstance().closeConnection(con,context);
         return new_scaniq_rrid;

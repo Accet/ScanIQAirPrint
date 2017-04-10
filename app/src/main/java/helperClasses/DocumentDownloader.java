@@ -16,6 +16,8 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import static notification_fcm.FirebaseMessagingService.imageURL;
+
 //import static com.example.samprint.MainActivity.completed;
 
 /**
@@ -26,6 +28,8 @@ public class DocumentDownloader extends AsyncTask<String, String, String>
 {
     public ProgressDialog pDialog;
     public Context context;
+    private WifiHelper wifi;
+    private ProgressDialog dialog;
 
     public DocumentDownloader(Context context) {
         this.context = context;
@@ -50,15 +54,14 @@ public class DocumentDownloader extends AsyncTask<String, String, String>
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        if(wifiManager.isWifiEnabled())
-        {
-            if(wifiManager.getConnectionInfo().getSSID() == "DIRECT-66085_PJ-773")
-            {
-                wifiManager.setWifiEnabled(false);
-            }
-        }
-        showDialog(0);
+
+        wifi = new WifiHelper(context.getApplicationContext());
+
+        dialog = new ProgressDialog(context);
+        dialog.setCancelable(false);
+        dialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+//        dialog.setMessage("Please wait a moment\nConecting to Internet...");
+//        dialog.show();
     }
 
     /**
@@ -67,6 +70,24 @@ public class DocumentDownloader extends AsyncTask<String, String, String>
     @Override
     protected String doInBackground(String... f_url) {
         int count;
+
+        if(!wifi.hasActiveInternetConnection(context.getApplicationContext())) {
+            try {
+                //check if connected!
+                while (!wifi.hasActiveInternetConnection(context.getApplicationContext())) {
+                    //Wait to connect
+                    Thread.sleep(500);
+                    Log.i("Connect","...ing");
+                    publishProgress("Waiting for active internet connection...");
+                }
+            } catch (Exception e) {
+                publishProgress("...");
+            }
+
+        }
+
+        publishProgress("Connected");
+
         try {
             URL url = new URL(f_url[0]);
             URLConnection conection = url.openConnection();
@@ -123,7 +144,20 @@ public class DocumentDownloader extends AsyncTask<String, String, String>
      * */
     protected void onProgressUpdate(String... progress) {
         // setting progress percentage
-        pDialog.setProgress(Integer.parseInt(progress[0]));
+        switch(progress[0])
+        {
+            case "Waiting for active internet connection...":
+                dialog.setMessage("Waiting for active internet connection...");
+                dialog.show();
+                break;
+            case "Connected": dialog.dismiss();
+                showDialog(0);
+                break;
+
+            default:
+                pDialog.setProgress(Integer.parseInt(progress[0]));
+        }
+
     }
 
     /**
@@ -134,7 +168,9 @@ public class DocumentDownloader extends AsyncTask<String, String, String>
     protected void onPostExecute(String file_url) {
         // dismiss the dialog after the file was downloaded
 //        completed = true;
+        imageURL = "";
         pDialog.dismiss();
+
 
         // Displaying downloaded image into image view
         // Reading image path from sdcard
