@@ -75,7 +75,7 @@ public class LocalFileManager {
 
     public boolean deletePrintedFile()
     {
-        File[] filestoPrint = getCompatibleFiles();
+        File[] filestoPrint = getCompatibleFilesPrint();
         if(filestoPrint.length != 0)
         {
             boolean temp = false;

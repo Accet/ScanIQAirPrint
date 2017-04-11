@@ -21,7 +21,7 @@ import static notification_fcm.FirebaseMessagingService.imageURL;
 public class DocumentDownloader extends AsyncTask<String, String, String>
 {
     public interface AsyncResponse {
-        void processFinish(Boolean output);
+        void processFinish(Boolean output, String absoluteFilePath);
     }
 
     AsyncResponse asyncResponse = null;
@@ -30,7 +30,7 @@ public class DocumentDownloader extends AsyncTask<String, String, String>
     public Context context;
     private WifiHelper wifi;
     private ProgressDialog dialog;
-
+    public static String fileName = "";
     public DocumentDownloader(Context context, AsyncResponse asyncResponse) {
         this.context = context;
         this.asyncResponse = asyncResponse;
@@ -107,9 +107,9 @@ public class DocumentDownloader extends AsyncTask<String, String, String>
 
             dir.mkdirs();
 
-            String tempName = URLUtil.guessFileName(f_url[0],null,null);
-            Log.i("F name ",""+tempName);
-            File file = new File(dir,tempName);
+            fileName = URLUtil.guessFileName(f_url[0],null,null);
+            Log.i("F name ",""+fileName);
+            File file = new File(dir,fileName);
 
             OutputStream output = new FileOutputStream(file);
 
@@ -172,9 +172,9 @@ public class DocumentDownloader extends AsyncTask<String, String, String>
 //        completed = true;
         imageURL = "";
         pDialog.dismiss();
-        asyncResponse.processFinish(true);
+        asyncResponse.processFinish(true, Environment.getExternalStorageDirectory().getAbsolutePath()+"/ScanIQ Air/"+fileName);
 
-        AlertBoxBuilder.AlertBox(context,"Download Complete","File is stored in\n \"internal storage/ScanIQ Air\"");
+//        AlertBoxBuilder.AlertBox(context,"Download Complete","File is stored in\n \"internal storage/ScanIQ Air\"");
 
         // Displaying downloaded image into image view
         // Reading image path from sdcard

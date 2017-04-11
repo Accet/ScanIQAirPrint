@@ -368,13 +368,14 @@ public class ScaniqMainActivity extends AppCompatActivity {
     public void printDocument(View view) {
         new DocumentDownloader(this, new DocumentDownloader.AsyncResponse() {
             @Override
-            public void processFinish(Boolean output) {
+            public void processFinish(Boolean output, String absoluteFilePath) {
                 new PrintingTask(ScaniqMainActivity.this, new PrintingTask.AsyncResponse() {
                     @Override
                     public void processFinish(Boolean output) {
                         printBtn.setEnabled(!output);
+//                        LocalFileManager.getInstance().deletePrintedFile();
                     }
-                });
+                }).execute(absoluteFilePath);
             }
         }).execute(imageURL);
     }

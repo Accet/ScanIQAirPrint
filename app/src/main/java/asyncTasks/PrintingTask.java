@@ -59,8 +59,7 @@ public class PrintingTask extends AsyncTask<String, String, String> {
         margins = new PrintAttributes.Margins(0, 0, 0, 0);
         contentType = CONTENT_TYPE_PDF;
         PrintUtil.doNotEncryptDeviceId = true;
-
-
+        Log.i(TAG,"->printing constructor");
     }
 
     @Override
@@ -72,22 +71,25 @@ public class PrintingTask extends AsyncTask<String, String, String> {
         dialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
         dialog.setMessage("Please wait a moment\nPrinting...");
         dialog.show();
-
+        Log.i(TAG,"->Pre-Exec");
     }
 
     @Override
     protected String doInBackground(String... params) {
-        File[] filesToPrint = mLocalFileManager.getCompatibleFilesPrint();
-//        String additionalEmail = params[0];
-        if (filesToPrint.length > 0) {
-            for (File file : filesToPrint) {
-                createUserSelectedPDFJobData(file);
-                PrintUtil.setPrintJobData(printJobData);
-            }
-            PrintUtil.print((Activity) context);
+        Log.i(TAG,"->doIn - Start");
+//        File[] filesToPrint = mLocalFileManager.getCompatibleFilesPrint();
+        String uri = params[0];
+//        Log.i("Length","->"+filesToPrint.length);
+//        if (filesToPrint.length > 0) {
+//            for (File file : filesToPrint) {
+        File file = new File(uri);
+        createUserSelectedPDFJobData(file);
+        PrintUtil.setPrintJobData(printJobData);
+//            }
+        PrintUtil.print((Activity) context);
 
-        }
-
+//        }
+        Log.i(TAG,"->doIn - End");
         return null;
     }
 
@@ -122,8 +124,8 @@ public class PrintingTask extends AsyncTask<String, String, String> {
         super.onPostExecute(s);
         dialog.dismiss();
 
-        mLocalFileManager.deleteFile();
+        //mLocalFileManager.deletePrintedFile();
         asyncResponse.processFinish(true);
-
+        Log.i(TAG,"->Post-Exec");
     }
 }
