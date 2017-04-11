@@ -6,9 +6,6 @@ import android.util.Log;
 import java.io.File;
 import java.io.FilenameFilter;
 
-/**
- * Created by savanpatel on 2017-02-22.
- */
 
 public class LocalFileManager {
 
@@ -26,6 +23,11 @@ public class LocalFileManager {
     public String getAbsoulteFilePath()
     {
         return Environment.getExternalStorageDirectory().getAbsolutePath() + "/ScanSnap";
+    }
+
+    public String getAbsoulteFilePathPrint()
+    {
+        return Environment.getExternalStorageDirectory().getAbsolutePath() + "/ScanIQ Air";
     }
 
     public int getFilesCount() {
@@ -47,6 +49,16 @@ public class LocalFileManager {
         return fileabsolute;
     }
 
+    public File[] getCompatibleFilesPrint()
+    {
+        File dir = new File(getAbsoulteFilePathPrint());
+
+        return dir.listFiles(new FilenameFilter() {
+            public boolean accept(File dir1, String filename)
+            { return filename.endsWith(".pdf"); }
+        } );
+    }
+
     public boolean deleteFile()
     {
         if(globalFileArray.length != 0)
@@ -54,6 +66,20 @@ public class LocalFileManager {
             boolean temp = false;
             File[] filestoSend = globalFileArray;
             for (File tempFile : filestoSend) {
+                temp = new File(tempFile.getAbsolutePath()).getAbsoluteFile().delete();
+            }
+            return temp;
+        }
+        return false;
+    }
+
+    public boolean deletePrintedFile()
+    {
+        File[] filestoPrint = getCompatibleFiles();
+        if(filestoPrint.length != 0)
+        {
+            boolean temp = false;
+            for (File tempFile : filestoPrint) {
                 temp = new File(tempFile.getAbsolutePath()).getAbsoluteFile().delete();
             }
             return temp;

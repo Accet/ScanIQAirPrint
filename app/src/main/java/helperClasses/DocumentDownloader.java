@@ -18,11 +18,6 @@ import java.net.URLConnection;
 
 import static notification_fcm.FirebaseMessagingService.imageURL;
 
-//import static com.example.samprint.MainActivity.completed;
-
-/**
- */
-
 public class DocumentDownloader extends AsyncTask<String, String, String>
 {
     public interface AsyncResponse {
@@ -39,6 +34,7 @@ public class DocumentDownloader extends AsyncTask<String, String, String>
     public DocumentDownloader(Context context, AsyncResponse asyncResponse) {
         this.context = context;
         this.asyncResponse = asyncResponse;
+
     }
 
     protected Dialog showDialog(int id) {

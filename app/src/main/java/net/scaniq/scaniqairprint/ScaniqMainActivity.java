@@ -23,6 +23,7 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import java.io.File;
 
 import asyncTasks.AfterScanningAsyncTask;
+import asyncTasks.PrintingTask;
 import asyncTasks.ScanningSettings;
 import helperClasses.DocumentDownloader;
 import helperClasses.LocalFileManager;
@@ -359,7 +360,13 @@ public class ScaniqMainActivity extends AppCompatActivity {
         new DocumentDownloader(this, new DocumentDownloader.AsyncResponse() {
             @Override
             public void processFinish(Boolean output) {
-                printBtn.setEnabled(false);
+                new PrintingTask(ScaniqMainActivity.this, new PrintingTask.AsyncResponse() {
+                    @Override
+                    public void processFinish(Boolean output) {
+                        printBtn.setEnabled(!output);
+
+                    }
+                });
             }
         }).execute(imageURL);
 
