@@ -61,13 +61,16 @@ public class ScaniqMainActivity extends AppCompatActivity {
     private String validFaxNumber = "";
     public static String serialNumber = null;
     public static boolean allowed = true;
+    private MyReceiver notificationReceiver = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scaniq_main);
 
-        registerReceiver(new MyReceiver(),new IntentFilter("MyReceiver"));
+        notificationReceiver = new MyReceiver();
+        registerReceiver(notificationReceiver,new IntentFilter("MyReceiver"));
 
         Toolbar tool_bar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(tool_bar);
@@ -393,4 +396,9 @@ public class ScaniqMainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(notificationReceiver);
+    }
 }
