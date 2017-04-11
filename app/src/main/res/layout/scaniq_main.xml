@@ -172,7 +172,7 @@
         android:layout_gravity="center_horizontal"
         android:background="@drawable/scan_btn_selector"
         android:onClick="printDocument"
-        android:text="Print"
+        android:text="Receive"
         android:textColor="@color/whiteFlat"
         android:textSize="24sp"
         android:enabled="false"

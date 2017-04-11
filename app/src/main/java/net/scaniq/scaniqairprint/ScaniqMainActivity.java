@@ -91,7 +91,7 @@ public class ScaniqMainActivity extends AppCompatActivity {
             {
                 printBtn = (Button) findViewById(R.id.printBtn);
             }
-            printBtn.setBackgroundColor(Color.argb(1,66,204,99));
+            printBtn.setEnabled(true);
         }
     }
 
@@ -390,7 +390,10 @@ public class ScaniqMainActivity extends AppCompatActivity {
     }
 
     public void printDocument(View view) {
-
+//        if(!imageURL.equals(""))
+//        {
+//            new DocumentDownloader(this).execute(imageURL);
+//        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////

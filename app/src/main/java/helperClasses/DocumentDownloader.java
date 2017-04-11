@@ -170,7 +170,7 @@ public class DocumentDownloader extends AsyncTask<String, String, String>
 //        completed = true;
         imageURL = "";
         pDialog.dismiss();
-
+        AlertBoxBuilder.AlertBox(context,"Download Complete","File is stored in\n \"internal storage/ScanIQ Air\"");
 
         // Displaying downloaded image into image view
         // Reading image path from sdcard
