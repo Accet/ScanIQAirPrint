@@ -1,8 +1,11 @@
 package net.scaniq.scaniqairprint;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +37,7 @@ import static net.scaniq.scaniqairprint.MainActivity.sharedInstance;
 import static notification_fcm.FirebaseMessagingService.imageURL;
 
 public class ScaniqMainActivity extends AppCompatActivity {
+
     private TextView ccEmailAddress = null;
     private TextView faxNumber = null;
     private TextView scaniqID = null;
@@ -48,11 +52,16 @@ public class ScaniqMainActivity extends AppCompatActivity {
     private String validFaxNumber = "";
     public static String serialNumber = null;
     public static boolean allowed = true;
+    private MyReceiver notificationReceiver = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scaniq_main);
+
+        notificationReceiver = new MyReceiver();
+        registerReceiver(notificationReceiver,new IntentFilter("MyReceiver"));
 
         Toolbar tool_bar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(tool_bar);
@@ -72,6 +81,7 @@ public class ScaniqMainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d("as", "gggg" +SharedPreferencesManager.getInstance(this).getSCAN_USER_SERIAl());
         if(!imageURL.equals(""))
         {
             if( printBtn == null )
@@ -368,11 +378,23 @@ public class ScaniqMainActivity extends AppCompatActivity {
                 });
             }
         }).execute(imageURL);
-
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     //**** Functions for runtime permissions for android version "M" (Marshmallow) or above : End ****//
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+    public class MyReceiver extends BroadcastReceiver{
+        public void onReceive(Context context, Intent intent){
+            printBtn.setEnabled(true);
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(notificationReceiver);
+    }
 }

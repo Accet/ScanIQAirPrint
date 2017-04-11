@@ -32,6 +32,10 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         Bundle b = new Bundle();
         b.putString("imageURl",imageURL);
         Log.i("Link ",""+imageURL);
+
+        Intent intents=new Intent();
+        intents.setAction("MyReceiver");
+        getBaseContext().sendBroadcast(intents);
     }
 
     private void showNotification(String message) {
