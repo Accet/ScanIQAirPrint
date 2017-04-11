@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -86,7 +87,7 @@ public class ScaniqMainActivity extends AppCompatActivity {
         super.onStart();
         if(!imageURL.equals(""))
         {
-            new DocumentDownloader(this).execute(imageURL);
+            //new DocumentDownloader(this).execute(imageURL);
             if( printBtn == null )
             {
                 printBtn = (Button) findViewById(R.id.printBtn);
@@ -390,10 +391,13 @@ public class ScaniqMainActivity extends AppCompatActivity {
     }
 
     public void printDocument(View view) {
-//        if(!imageURL.equals(""))
-//        {
-//            new DocumentDownloader(this).execute(imageURL);
-//        }
+        new DocumentDownloader(this, new DocumentDownloader.AsynResponse() {
+            @Override
+            public void processFinish(Boolean output) {
+                printBtn.setEnabled(false);
+            }
+        }).execute(imageURL);
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
