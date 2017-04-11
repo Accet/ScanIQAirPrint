@@ -42,7 +42,7 @@ import static net.scaniq.scaniqairprint.MainActivity.sharedInstance;
 import static notification_fcm.FirebaseMessagingService.imageURL;
 
 public class ScaniqMainActivity extends AppCompatActivity {
-
+// test
     private TextView ccEmailAddress = null;
     private TextView faxNumber = null;
     private TextView scaniqID = null;
