@@ -42,7 +42,6 @@ import static net.scaniq.scaniqairprint.MainActivity.sharedInstance;
 import static notification_fcm.FirebaseMessagingService.imageURL;
 
 public class ScaniqMainActivity extends AppCompatActivity {
-// test
     private TextView ccEmailAddress = null;
     private TextView faxNumber = null;
     private TextView scaniqID = null;
@@ -70,16 +69,13 @@ public class ScaniqMainActivity extends AppCompatActivity {
 
         gatherAllControls(); //Wire all layout control to this activity
         setTextToLabels();
-
         //Check for permissions
         if(!(hasPermissions()))
         {
             requestPermissions();
         }
-
         wifi = new WifiHelper(this);
     }
-
 
     @Override
     protected void onStart() {
@@ -104,7 +100,6 @@ public class ScaniqMainActivity extends AppCompatActivity {
         printBtn = (Button) findViewById(R.id.printBtn);
         gatherFAB();
     }
-
 
     private void gatherFAB() {
 
@@ -135,8 +130,6 @@ public class ScaniqMainActivity extends AppCompatActivity {
     public void scanBtnClicked(View view)
     {
         new ScanningSettings(this).execute();
-
-//        new WirelessScannerAsyncTask(this).execute();
     }
 
     public void ccEmailCancelClicked(View view)
@@ -156,7 +149,6 @@ public class ScaniqMainActivity extends AppCompatActivity {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     //***                          Functions for button clicked event: End                         ***//
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
     public void showCCEmailDialog() {
 
@@ -227,7 +219,6 @@ public class ScaniqMainActivity extends AppCompatActivity {
         });
     }
 
-
     public void showFaxDialog() {
 
         LayoutInflater li = LayoutInflater.from(this);
@@ -236,7 +227,6 @@ public class ScaniqMainActivity extends AppCompatActivity {
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 this);
 
-        // set prompts.xml to alertdialog builder
         alertDialogBuilder.setView(promptsView);
         alertDialogBuilder.setTitle("Send a copy to a Fax");
         alertDialogBuilder.setMessage("Enter the fax number");
@@ -248,7 +238,6 @@ public class ScaniqMainActivity extends AppCompatActivity {
 
         final TextView msg = (TextView) promptsView.findViewById(R.id.msg);
 
-        // set dialog message
         alertDialogBuilder.setCancelable(true).setPositiveButton("Add",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -261,12 +250,8 @@ public class ScaniqMainActivity extends AppCompatActivity {
                             }
                         });
 
-        // create alert dialog
         final AlertDialog alertDialog = alertDialogBuilder.create();
-
-        // show it
         alertDialog.show();
-
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -292,15 +277,11 @@ public class ScaniqMainActivity extends AppCompatActivity {
                     faxNumber.setText("Fax : "+validFaxNumber.replaceFirst("(\\d{1})(\\d{3})(\\d{3})(\\d+)", "(+$1) ($2) $3-$4"));
                     wantToCloseDialog = false;
                 }
-                //Do stuff, possibly set wantToCloseDialog to true then...
                 if (!wantToCloseDialog)
                     alertDialog.dismiss();
-                //else dialog stays open. Make sure you have an obvious way to close the dialog especially if you set cancellable to false.
             }
         });
     }
-
-
 
     private void setTextToLabels() {
         MYSQLRRuid = sharedInstance.getScaniqRrid();
@@ -309,7 +290,6 @@ public class ScaniqMainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        Log.i("Result After Scan", "resultCode -> " + resultCode);
         switch ( requestCode )
         {
             case SCANSNAP_REQ:
@@ -330,13 +310,8 @@ public class ScaniqMainActivity extends AppCompatActivity {
     private void disconnectScanner() {
 
         if (wifi.checkWifiEnabled()) {
-//            WifiInfo curNetwork = wifi.getWifiInfo(this);
-//            int id = curNetwork.getNetworkId();
-//            boolean removed = wifi.removeFromConfiguration(id);
-//            Log.i("Scan MAin", "removed -> " + removed);
             wifi.disconnectFromWifi();
             wifi.disableWifi();
-//            wifi.connectToSelectedNetwork("BEACONTREE", "!beacon1141?");
         }
     }
 
