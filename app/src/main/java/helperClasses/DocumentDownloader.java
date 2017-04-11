@@ -25,7 +25,6 @@ import static notification_fcm.FirebaseMessagingService.imageURL;
 //import static com.example.samprint.MainActivity.completed;
 
 /**
- * Created by Savan on 2016-10-21.
  */
 
 public class DocumentDownloader extends AsyncTask<String, String, String>
