@@ -4,10 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,17 +19,11 @@ import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import asyncTasks.AfterScanningAsyncTask;
 import asyncTasks.ScanningSettings;
-import asyncTasks.WirelessScannerAsyncTask;
-import helperClasses.AlertBoxBuilder;
-import helperClasses.BarcodeProcessor;
 import helperClasses.DocumentDownloader;
 import helperClasses.LocalFileManager;
 import helperClasses.SharedPreferencesManager;
@@ -366,7 +356,7 @@ public class ScaniqMainActivity extends AppCompatActivity {
     }
 
     public void printDocument(View view) {
-        new DocumentDownloader(this, new DocumentDownloader.AsynResponse() {
+        new DocumentDownloader(this, new DocumentDownloader.AsyncResponse() {
             @Override
             public void processFinish(Boolean output) {
                 printBtn.setEnabled(false);

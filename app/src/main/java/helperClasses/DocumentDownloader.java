@@ -3,14 +3,10 @@ package helperClasses;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 import android.webkit.URLUtil;
-import android.widget.Button;
-
-import net.scaniq.scaniqairprint.ScaniqMainActivity;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -29,20 +25,20 @@ import static notification_fcm.FirebaseMessagingService.imageURL;
 
 public class DocumentDownloader extends AsyncTask<String, String, String>
 {
-    public interface AsynResponse {
+    public interface AsyncResponse {
         void processFinish(Boolean output);
     }
 
-    AsynResponse asynResponse = null;
+    AsyncResponse asyncResponse = null;
 
     public ProgressDialog pDialog;
     public Context context;
     private WifiHelper wifi;
     private ProgressDialog dialog;
 
-    public DocumentDownloader(Context context, AsynResponse asynResponse) {
+    public DocumentDownloader(Context context, AsyncResponse asyncResponse) {
         this.context = context;
-        this.asynResponse = asynResponse;
+        this.asyncResponse = asyncResponse;
     }
 
     protected Dialog showDialog(int id) {
@@ -180,7 +176,7 @@ public class DocumentDownloader extends AsyncTask<String, String, String>
 //        completed = true;
         imageURL = "";
         pDialog.dismiss();
-        asynResponse.processFinish(true);
+        asyncResponse.processFinish(true);
 
         AlertBoxBuilder.AlertBox(context,"Download Complete","File is stored in\n \"internal storage/ScanIQ Air\"");
 
