@@ -74,7 +74,6 @@ public class ScaniqMainActivity extends AppCompatActivity {
         super.onStart();
         if(!imageURL.equals(""))
         {
-            //new DocumentDownloader(this).execute(imageURL);
             if( printBtn == null )
             {
                 printBtn = (Button) findViewById(R.id.printBtn);
