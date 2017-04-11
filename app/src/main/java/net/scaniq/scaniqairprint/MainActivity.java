@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity{
                     String user_md5 = userInfo.getString(2);
                     String user_mailTo = userInfo.getString(3);
                     int user_isActive = userInfo.getInt(4);
+                    String user_serial = userInfo.getString(5);
 
                     FirebaseMessaging.getInstance().subscribeToTopic("message");
                     String user_token = FirebaseInstanceId.getInstance().getToken();;
@@ -120,6 +121,7 @@ public class MainActivity extends AppCompatActivity{
                     sharedInstance.setScaniqMailto(user_mailTo);
                     sharedInstance.setScaniqMd5(user_md5);
                     sharedInstance.setScaniqRrid(user_rrid);
+                    sharedInstance.setSCAN_USER_SERIAl(user_serial);
 //                    sharedInstance.setScanFcmtoken(usert_token);
                     if(!SharedPreferencesManager.getInstance(this).getScanFcmtoken().equals(user_token) && !user_rrid.equals("")) {
                         SharedPreferencesManager.getInstance(this).setScanFcmtoken(user_token);
@@ -187,7 +189,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private ResultSet userExistInDatabase(Connection con, String userEmail) {
-        String query = "SELECT RR_ID, RR_MD5, RR_mailTO, RR_ActiveMobile, RR_FCMToken FROM RR_Settings WHERE RR_mailTO = \"" + userEmail + "\" ORDER BY RR_ID DESC LIMIT 1 ; ";
+        String query = "SELECT RR_ID, RR_MD5, RR_mailTO, RR_ActiveMobile, RR_Serial, RR_FCMToken FROM RR_Settings WHERE RR_mailTO = \"" + userEmail + "\" ORDER BY RR_ID DESC LIMIT 1 ; ";
         Log.i(TAG,"->"+query);
 
         return mDbManager.executeSelecteQuery(con, query, this);

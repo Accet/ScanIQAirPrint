@@ -1,8 +1,11 @@
 package net.scaniq.scaniqairprint;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
@@ -43,6 +46,7 @@ import static net.scaniq.scaniqairprint.MainActivity.sharedInstance;
 import static notification_fcm.FirebaseMessagingService.imageURL;
 
 public class ScaniqMainActivity extends AppCompatActivity {
+
     private TextView ccEmailAddress = null;
     private TextView faxNumber = null;
     private TextView scaniqID = null;
@@ -63,6 +67,8 @@ public class ScaniqMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scaniq_main);
 
+        registerReceiver(new MyReceiver(),new IntentFilter("MyReceiver"));
+
         Toolbar tool_bar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(tool_bar);
 
@@ -81,6 +87,7 @@ public class ScaniqMainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d("as", "gggg" +SharedPreferencesManager.getInstance(this).getSCAN_USER_SERIAl());
         if(!imageURL.equals(""))
         {
             //new DocumentDownloader(this).execute(imageURL);
@@ -372,11 +379,18 @@ public class ScaniqMainActivity extends AppCompatActivity {
                 printBtn.setEnabled(false);
             }
         }).execute(imageURL);
-
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     //**** Functions for runtime permissions for android version "M" (Marshmallow) or above : End ****//
     ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    public class MyReceiver extends BroadcastReceiver{
+        public void onReceive(Context context, Intent intent){
+            printBtn.setEnabled(true);
+        }
+
+    }
 
 }
