@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "net.scaniq.scaniqairprint"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -44,6 +44,8 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:10.2.1'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.getbase:floatingactionbutton:1.10.1'
+    compile 'com.hp.mss:mobileprintsdk:v2.02.418'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

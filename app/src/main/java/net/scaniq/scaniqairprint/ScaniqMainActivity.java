@@ -373,7 +373,6 @@ public class ScaniqMainActivity extends AppCompatActivity {
                     @Override
                     public void processFinish(Boolean output) {
                         printBtn.setEnabled(!output);
-
                     }
                 });
             }
