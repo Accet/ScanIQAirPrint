@@ -56,6 +56,4 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         manager.notify(0,builder.build());
     }
-
-
 }
