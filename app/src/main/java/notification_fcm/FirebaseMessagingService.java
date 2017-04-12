@@ -49,7 +49,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setAutoCancel(true)
                 .setContentTitle("ScanIQ Air")
                 .setContentText(message)
-                .setSmallIcon(R.drawable.icon_128x128)
+                .setSmallIcon(R.drawable.ic_stat_name)
                 .setContentIntent(pendingIntent).setDefaults(Notification.DEFAULT_SOUND);
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

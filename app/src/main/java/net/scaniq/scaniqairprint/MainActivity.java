@@ -122,10 +122,8 @@ public class MainActivity extends AppCompatActivity{
                     sharedInstance.setScaniqMd5(user_md5);
                     sharedInstance.setScaniqRrid(user_rrid);
                     sharedInstance.setSCAN_USER_SERIAl(user_serial);
-//                    sharedInstance.setScanFcmtoken(usert_token);
                     if(!SharedPreferencesManager.getInstance(this).getScanFcmtoken().equals(user_token) && !user_rrid.equals("")) {
                         SharedPreferencesManager.getInstance(this).setScanFcmtoken(user_token);
-//                        Connection con = DatabaseManager.getInstance().getConnection(this);
                         DatabaseManager.getInstance().executeStoreFCMTokenPreparedStatement(con, user_token, user_rrid, this);
                     }
                     if (user_isActive != 1) {
