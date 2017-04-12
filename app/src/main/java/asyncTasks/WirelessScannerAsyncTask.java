@@ -25,7 +25,8 @@ public class WirelessScannerAsyncTask extends AsyncTask<String, String, String>{
     private String networkPassword = "";
     private final String LAT = "latitude";
     private final String LON = "longitude";
-
+    private String additionalEmail;
+    private String validFaxNumber;
     public WirelessScannerAsyncTask(Context context) {
         this.context = context;
     }
@@ -52,7 +53,10 @@ public class WirelessScannerAsyncTask extends AsyncTask<String, String, String>{
     @Override
     protected String doInBackground(String... strings) {
         Log.i("Wifi"," doIn");
-
+        if(strings.length>0) {
+            additionalEmail = strings[0];
+            validFaxNumber = strings[1];
+        }
         List<ScanResult> wifiList;
 
         while (SSID.equals("") && networkPassword.equals("")) {
@@ -66,12 +70,12 @@ public class WirelessScannerAsyncTask extends AsyncTask<String, String, String>{
                 String tempSSID = wifiList.get(i).SSID;
                 Log.i("Wifi", "wifiList.get(i).SSID ->" + wifiList.get(i).SSID);
 
-                if ((tempSSID).contains("iX100")) {
+                if ((tempSSID).contains("OfficeJet 250")) {
                     SSID = tempSSID;
                     Log.i("Wifi", "getScanResults in if SSID ->" + SSID);
 
-                    networkPassword = tempSSID.substring(6);
-                    serialNumber = networkPassword;
+                    networkPassword = "12345678";//tempSSID.substring(6);
+                    serialNumber = "HP OfficeJet 250";//networkPassword;
                     break;
                 }
             }
@@ -93,7 +97,7 @@ public class WirelessScannerAsyncTask extends AsyncTask<String, String, String>{
             }
 
         }
-
+        publishProgress("Launch Scanner");
         return null;
     }
 
@@ -105,19 +109,26 @@ public class WirelessScannerAsyncTask extends AsyncTask<String, String, String>{
         SharedPreferencesManager.getInstance(context).setScanLat(""+location.get(LAT));
         SharedPreferencesManager.getInstance(context).setScanLon(""+location.get(LON));
 
-        Uri uri = Uri.parse("scansnap://" + this.SSID + "/Scan&Format=1&SaveTogether=0");
-        Intent in = new Intent();
-        in.setData(uri);
-        in.setFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-        serialNumber = this.SSID;
+        //serialNumber = this.SSID;
         this.SSID = "";
         this.networkPassword = "";
-        ((ScaniqMainActivity) context).startActivityForResult(in,100);
+        //((ScaniqMainActivity) context).startActivityForResult(in,100);
 
         dialog.dismiss();
     }
 
     protected void onProgressUpdate(String... progress) {
+        String str = progress[0];
+        Log.i("Scanner","Status -> "+str);
+        if(str.equals("Launch Scanner") )
+        {
+            new ScanningTask(context, new ScanningTask.AsyncResponse() {
+                @Override
+                public void processFinish(Boolean output) {
+
+                }
+            }).execute(additionalEmail,validFaxNumber);
+        }
     }
 
     private HashMap getLocationFromHelperClass()

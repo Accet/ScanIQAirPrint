@@ -29,6 +29,8 @@ public class ScanningSettings extends AsyncTask<String, String, String> {
     private ProgressDialog dialog;
     private WifiHelper wifiHelper;
     private int isProbillNumberActive;
+    private String additionalEmail;
+    private String validFaxNumber;
 
     public ScanningSettings(Context context) {
         this.context = context;
@@ -48,6 +50,10 @@ public class ScanningSettings extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... strings) {
+        if(strings.length>0) {
+            additionalEmail = strings[0];
+            validFaxNumber = strings[1];
+        }
         if(wifiHelper.hasActiveInternetConnection(context.getApplicationContext())) {
             DatabaseManager dbManager = DatabaseManager.getInstance();
 
@@ -106,7 +112,7 @@ public class ScanningSettings extends AsyncTask<String, String, String> {
                 break;
             case "no probill":
                 dialog.dismiss();
-                new WirelessScannerAsyncTask(context).execute();
+                new WirelessScannerAsyncTask(context).execute(additionalEmail,validFaxNumber);
                 break;
             default:
                 break;

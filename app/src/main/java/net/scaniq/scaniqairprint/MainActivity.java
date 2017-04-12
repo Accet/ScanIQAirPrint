@@ -1,6 +1,7 @@
 package net.scaniq.scaniqairprint;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -116,12 +117,14 @@ public class MainActivity extends AppCompatActivity{
                     String user_serial = userInfo.getString(5);
 
                     FirebaseMessaging.getInstance().subscribeToTopic("message");
-                    String user_token = FirebaseInstanceId.getInstance().getToken();;
+                    String user_token = FirebaseInstanceId.getInstance().getToken();
+                    registerToken(user_token);
 
                     sharedInstance.setScaniqMailto(user_mailTo);
                     sharedInstance.setScaniqMd5(user_md5);
                     sharedInstance.setScaniqRrid(user_rrid);
                     sharedInstance.setSCAN_USER_SERIAl(user_serial);
+
 //                    sharedInstance.setScanFcmtoken(usert_token);
                     if(!SharedPreferencesManager.getInstance(this).getScanFcmtoken().equals(user_token) && !user_rrid.equals("")) {
                         SharedPreferencesManager.getInstance(this).setScanFcmtoken(user_token);
@@ -310,6 +313,16 @@ public class MainActivity extends AppCompatActivity{
                     validateEmail();
                     break;
             }
+        }
+    }
+    private void registerToken(String token) {
+        Log.i("RRuid","registerToken"+token);
+
+        if(!SharedPreferencesManager.getInstance(this).getScanFcmtoken().equals(token) && !MYSQLRRuid.equals("")) {
+            SharedPreferencesManager.getInstance(this).setScanFcmtoken(token);
+            Connection con = DatabaseManager.getInstance().getConnection(this);
+            DatabaseManager.getInstance().executeStoreFCMTokenPreparedStatement(con, token, MYSQLRRuid, this);
+            DatabaseManager.getInstance().closeConnection(con,this);
         }
     }
 }

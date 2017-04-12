@@ -25,6 +25,12 @@ android {
     useLibrary 'org.apache.http.legacy'
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -45,7 +51,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.getbase:floatingactionbutton:1.10.1'
     compile 'com.hp.mss:mobileprintsdk:v2.02.418'
-
+    compile(name: 'HP-scan-sdk-1.0.0', ext: 'aar')
 }
 
 apply plugin: 'com.google.gms.google-services'

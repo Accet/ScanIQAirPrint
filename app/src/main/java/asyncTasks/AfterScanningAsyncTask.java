@@ -67,9 +67,14 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... strings) {
-        String additionalEmail = strings[0];
-        String validFaxNumber = strings[1];
+        String additionalEmail = "";
+        String validFaxNumber = "";
 
+
+        if(strings.length>0) {
+            additionalEmail = strings[0];
+            validFaxNumber = strings[1];
+        }
         Log.i("Path", "-> " + mLocalFileManager.getAbsoulteFilePath());
         try {
 //            String path = mLocalFileManager.getAbsoulteFilePath();
@@ -259,6 +264,7 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
             e.printStackTrace();
             return 0;
         }
+//        return 1;
     }
 
     private void sendToFTP() {

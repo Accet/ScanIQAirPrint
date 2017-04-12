@@ -130,7 +130,7 @@ public class ScaniqMainActivity extends AppCompatActivity {
 
     public void scanBtnClicked(View view)
     {
-        new ScanningSettings(this).execute();
+        new ScanningSettings(this).execute(additionalEmail,validFaxNumber);
     }
 
     public void ccEmailCancelClicked(View view)
@@ -296,7 +296,7 @@ public class ScaniqMainActivity extends AppCompatActivity {
             case SCANSNAP_REQ:
                 Log.i("Result After Scan","-> We're back in ScanIQ :) ");
                 //Start sending files
-                disconnectScanner();
+//                disconnectScanner();
                 //Get the CC if entered.....
                 File[] files = LocalFileManager.getInstance().getCompatibleFiles();
                 if (files.length > 0) {

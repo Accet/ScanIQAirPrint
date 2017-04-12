@@ -22,7 +22,7 @@ public class LocalFileManager {
 
     public String getAbsoulteFilePath()
     {
-        return Environment.getExternalStorageDirectory().getAbsolutePath() + "/ScanSnap";
+        return Environment.getExternalStorageDirectory().getAbsolutePath() + "/ScanIQ Air/Scans";
     }
 
     public String getAbsoulteFilePathPrint()
