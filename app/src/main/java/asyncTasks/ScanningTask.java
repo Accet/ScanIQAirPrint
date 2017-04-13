@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import helperClasses.AlertBoxBuilder;
 import helperClasses.LocalFileManager;
 import helperClasses.Setting;
 
@@ -181,6 +182,8 @@ public class ScanningTask extends AsyncTask<String, String, String> {
                 @Override
                 public void onScanningError(final ScannerException aException) {
                     Log.i(TAG, "onScanningError: ", aException);
+                    dialog.dismiss();
+                    AlertBoxBuilder.AlertBox(context,"Failure","Failed to scan document.\nPlease try again...");
                     closeSession();
                 }
             };
