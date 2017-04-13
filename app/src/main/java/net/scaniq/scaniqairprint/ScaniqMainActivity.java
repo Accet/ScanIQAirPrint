@@ -296,7 +296,7 @@ public class ScaniqMainActivity extends AppCompatActivity {
             case SCANSNAP_REQ:
                 Log.i("Result After Scan","-> We're back in ScanIQ :) ");
                 //Start sending files
-//                disconnectScanner();
+                disconnectScanner();
                 //Get the CC if entered.....
                 File[] files = LocalFileManager.getInstance().getCompatibleFiles();
                 if (files.length > 0) {

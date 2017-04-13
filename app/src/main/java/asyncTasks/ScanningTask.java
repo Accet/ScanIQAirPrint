@@ -13,11 +13,14 @@ import android.widget.Toast;
 
 import com.hp.mobile.scan.sdk.AdfException;
 import com.hp.mobile.scan.sdk.ScanCapture;
+import com.hp.mobile.scan.sdk.ScanTicketValidator;
 import com.hp.mobile.scan.sdk.Scanner;
 import com.hp.mobile.scan.sdk.ScannerException;
 import com.hp.mobile.scan.sdk.browsing.ScannersBrowser;
+import com.hp.mobile.scan.sdk.model.Resolution;
 import com.hp.mobile.scan.sdk.model.ScanPage;
 import com.hp.mobile.scan.sdk.model.ScanTicket;
+import com.hp.mobile.scan.sdk.model.ScanValues;
 import com.hp.mss.hpprint.model.PDFPrintItem;
 import com.hp.mss.hpprint.model.PrintItem;
 import com.hp.mss.hpprint.model.PrintJobData;
@@ -27,8 +30,15 @@ import com.hp.mss.hpprint.util.PrintUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import helperClasses.LocalFileManager;
+import helperClasses.Setting;
 
 import static net.scaniq.scaniqairprint.ScaniqMainActivity.serialNumber;
 
@@ -39,6 +49,7 @@ import static net.scaniq.scaniqairprint.ScaniqMainActivity.serialNumber;
 public class ScanningTask extends AsyncTask<String, String, String> {
 
     private ScanTicket mScanTicket;
+
 
     public interface AsyncResponse {
         void processFinish(Boolean output);
@@ -62,6 +73,12 @@ public class ScanningTask extends AsyncTask<String, String, String> {
         this.asyncResponse = asyncResponse;
 //        mScanTicket = new ScanTicket()
         mScannerBrowser = new ScannersBrowser(context.getApplicationContext());
+
+////////////////////////////
+
+
+
+////////////////////////////
 
     }
 
@@ -97,7 +114,24 @@ public class ScanningTask extends AsyncTask<String, String, String> {
                 mScanner = aScanner;
                 Log.i(TAG, "Scanner found ->" + aScanner.getIdentifier());
                 serialNumber = aScanner.getIdentifier();
-                mScanner.scan(theScan_demo.getAbsolutePath(), null, mScanProgressListener);
+                mScanTicket = ScanTicket.createWithPreset(ScanTicket.SCAN_PRESET_TEXT_AND_IMAGES);
+                mScanTicket.setSetting(ScanTicket.SCAN_SETTING_CONTENT_TYPE,"Auto");
+                mScanTicket.setSetting(ScanTicket.SCAN_SETTING_FORMAT,1);
+                mScanTicket.setSetting(ScanTicket.SCAN_SETTING_RESOLUTION,new Resolution(600,600));
+
+                mScanner.validateTicket(mScanTicket, new ScanTicketValidator.ScanTicketValidationListener() {
+                    @Override
+                    public void onScanTicketValidationComplete(ScanTicket aValidScanTicket) {
+                        Log.i(TAG,"Validation Complete");
+                    }
+
+                    @Override
+                    public void onScanTicketValidationError(ScannerException aException) {
+                        Log.i(TAG,"Ticket Error");
+                    }
+                });
+
+                mScanner.scan(theScan_demo.getAbsolutePath(), mScanTicket, mScanProgressListener);
                 mScannerBrowser.stop();
             }
 
@@ -156,4 +190,9 @@ public class ScanningTask extends AsyncTask<String, String, String> {
             mScanner.cancelScanning();
         }
     }
+
+
+//****************************************************************//
+//****************************************************************//
+
 }

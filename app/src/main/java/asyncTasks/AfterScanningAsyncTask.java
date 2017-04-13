@@ -140,6 +140,10 @@ public class AfterScanningAsyncTask extends AsyncTask<String, String, String> {
                     File newFile = new File(path, createFileName(probillNumber));
                     file.renameTo(newFile);
                 }
+                else{
+                    File newFile = new File(path, createFileName(""));
+                    file.renameTo(newFile);
+                }
             }
 
             filestoSend = mLocalFileManager.getCompatibleFiles();
