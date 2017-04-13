@@ -118,7 +118,7 @@ public class ScanningTask extends AsyncTask<String, String, String> {
                 mScanTicket = ScanTicket.createWithPreset(ScanTicket.SCAN_PRESET_TEXT_AND_IMAGES);
                 mScanTicket.setSetting(ScanTicket.SCAN_SETTING_CONTENT_TYPE,"Auto");
                 mScanTicket.setSetting(ScanTicket.SCAN_SETTING_FORMAT,1);
-                mScanTicket.setSetting(ScanTicket.SCAN_SETTING_RESOLUTION,new Resolution(600,600));
+//                mScanTicket.setSetting(ScanTicket.SCAN_SETTING_RESOLUTION,new Resolution(600,600));
 
                 mScanner.validateTicket(mScanTicket, new ScanTicketValidator.ScanTicketValidationListener() {
                     @Override
